@@ -52,9 +52,8 @@ const mascotas = {
                             2: true
                         },
                 }
+
 }
-
-
 
 function seleccionarMascotaJugador(){
     if(hipodoge.checked == true){
@@ -62,20 +61,21 @@ function seleccionarMascotaJugador(){
         alert("seleccionaste a Hipodoge")
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
         saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
-        habilidades.innerHTML = `<button id="btnFuego1">Bomba de fuego</button>
+        habilidades.innerHTML = `<button id="btnFuego1" class="btnG">Bomba de fuego</button>
                                  <button id="btnFuego2">Escudo de fuego</button>
                                  <button id="btnFuego3">Esquivar</button>`
 
         seleccionarMascotaPC()
 
         //botones de ataque con fuego
+
         const btnFuego1 = document.querySelector("#btnFuego1")
         btnFuego1.addEventListener("click", ataqueFuego1)       
         const btnFuego2 = document.querySelector("#btnFuego2")
         btnFuego2.addEventListener("click", ataqueFuego2)
         const btnFuego3 = document.querySelector("#btnFuego3")
         btnFuego3.addEventListener("click", ataqueFuego3)
-
+        
     }else if(capipepo.checked == true){
         eleccionJugador = Object.keys(mascotas)[1]
         alert("seleccionaste a Capipepo")
@@ -148,13 +148,14 @@ function seleccionarMascotaPC(){
 
 //Funciones de habilidades de los personajes
 //fuego
+
 function ataqueFuego1(){
-    alert("hiciste un ataque con Bomba de fuego")
-    let valorJugador = "ataque"
-    let valorEnemigo = ataqueEnemigo()
-    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-    return resultadoRonda
-    
+alert("hiciste un ataque con Bomba de fuego")
+let valorJugador = "ataque"
+let valorEnemigo = ataqueEnemigo()
+let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+return resultadoRonda
+
 }
 function ataqueFuego2(){
     alert("Usaste la habilidad Escudo de fuego")
@@ -215,6 +216,8 @@ function ataqueTierra3(){
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda
 }
+
+
 // esta es la funcion de ataque enemigo
 function ataqueEnemigo(){
 
@@ -284,47 +287,95 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         saludJugador1.innerText = String(saludJugador)
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
         saludEnemigo1.innerText = String(saludEnemigo)
-        mensajes.innerHTML = `<p>${eleccionJugador} de Jugador inflinge ${ataqueJugador} de daño a ${eleccionPC} de PC. ${eleccionPC} de PC inflinge ${ataquePc} de daño a ${eleccionJugador} de Jugador.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p>${eleccionJugador} de Jugador inflinge ${ataqueJugador} de daño a ${eleccionPC} de PC. ${eleccionPC} de PC inflinge ${ataquePc} de daño a ${eleccionJugador} de Jugador.</p>`
+        mensajes.appendChild(parrafo)
+        salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
         let saludJugador = parseInt(saludJugador1.innerText) - defensaPc
         saludJugador1.innerText = String(saludJugador)
-        mensajes.innerHTML = `<p>${eleccionPC} de PC refleja ${defensaPc} de daño a ${eleccionJugador} de Jugador al usar la habilidad de Escudo.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p>${eleccionPC} de PC refleja ${defensaPc} de daño a ${eleccionJugador} de Jugador al usar la habilidad de Escudo.</p>`
+        mensajes.appendChild(parrafo)
+        salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
         esquivaHabilidad = esquivarAleatorio(1,2)
         if(esquivaPc[esquivaHabilidad] == false){
             let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
-            mensajes.innerHTML = `<p> ${eleccionPC} de PC no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.</p>`
+            let parrafo = document.createElement("p")
+            parrafo.innerHTML = `<p> ${eleccionPC} de PC no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.</p>`
+            mensajes.appendChild(parrafo)
+            salud()
         }else{
             let saludEnemigo = parseInt(saludEnemigo1.innerText) + ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
-            mensajes.innerHTML = `<p> ${eleccionPC} de PC pudo esquivar el ataque con exito y restaura ${ataqueJugador} de salud. </p>`
+            let parrafo = document.createElement("p")
+            parrafo.innerHTML = `<p> ${eleccionPC} de PC pudo esquivar el ataque con exito y restaura ${ataqueJugador} de salud. </p>`
+            mensajes.appendChild(parrafo)
+            salud()
         }
     }else if(valorJugador == "defensa" && valorEnemigo == "ataque"){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - defensaJugador
         saludEnemigo1.innerText = String(saludEnemigo)
-        mensajes.innerHTML = `<p> ${eleccionJugador} de Jugador refleja ${defensaJugador} de año a ${eleccionPC} de PC al usar la habilidad de Escudo </p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p> ${eleccionJugador} de Jugador refleja ${defensaJugador} de año a ${eleccionPC} de PC al usar la habilidad de Escudo </p>`
+        mensajes.appendChild(parrafo)
+        salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
-        mensajes.innerHTML = `<p>Ambos personajes se defienden y ninguno sufre daño.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p>Ambos personajes se defienden y ninguno sufre daño.</p>`
+        mensajes.appendChild(parrafo)
+        
     }else if(valorJugador == "defensa" && valorEnemigo == "esquiva"){
-        mensajes.innerHTML = `<p>ninguno de los personajes sufre daño.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p>ninguno de los personajes sufre daño.</p>`
+        mensajes.appendChild(parrafo)
+        
     }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
         esquivaHabilidad = esquivarAleatorio(1,2)
         if(esquivaJugador[esquivaHabilidad] == false){
             let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
             saludJugador1.innerText = String(saludJugador)
-            mensajes.innerHTML = `<p> ${eleccionJugador} de Jugador no pudo esquivar el ataque y recibe ${ataquePc} de daño.</p>`
+            let parrafo = document.createElement("p")
+            parrafo.innerHTML = `<p> ${eleccionJugador} de Jugador no pudo esquivar el ataque y recibe ${ataquePc} de daño.</p>`
+            mensajes.appendChild(parrafo)
+            salud()
         }else{
             let saludJugador = parseInt(saludJugador1.innerText) + ataquePc
             saludJugador1.innerText = String(saludJugador)
-            mensajes.innerHTML = `<p> ${eleccionJugador} de Jugador pudo esquivar el ataque con exito y restaura ${ataquePc} de salud. </p>`
+            let parrafo = document.createElement("p")
+            parrafo.innerHTML = `<p> ${eleccionJugador} de Jugador pudo esquivar el ataque con exito y restaura ${ataquePc} de salud. </p>`
+            mensajes.appendChild(parrafo)
+            salud()
         }
     }else if(valorJugador == "esquiva" && valorEnemigo == "defensa"){
-        mensajes.innerHTML = `<p>ninguno de los personajes sufre daño.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p>ninguno de los personajes sufre daño.</p>`
+        mensajes.appendChild(parrafo)
     }else if(valorJugador == "esquiva" && valorEnemigo == "esquiva"){
-        mensajes.innerHTML = `<p> anbos personajes usan la habilidad de esquivar.</p>`
+        let parrafo = document.createElement("p")
+        parrafo.innerHTML = `<p> anbos personajes usan la habilidad de esquivar.</p>`
+        mensajes.appendChild(parrafo)
     }else{
+
         mensajes.innerHTML = `<p>algo salio mal.</p>`
     }
+}
 
+function salud(){
+    if(parseInt(saludJugador1.innerText) <= 0){
+        alert("PERDISTE TU PERSONAJE FUE ELIMINADO")
+        habilidades.classList.add("inactive")
+        btnReiniciar = document.querySelector("#btnReiniciar")
+        btnReiniciar.classList.remove("inactive")
+        btnReiniciar.addEventListener("click", () =>{location.reload()})
+
+    }else if(parseInt(saludEnemigo1.innerText) <= 0){
+        alert("GANASTE EL PERSONAJE ENEMIGO FUE ELIMINADO")
+        habilidades.classList.add("inactive")
+        btnReiniciar = document.querySelector("#btnReiniciar")
+        btnReiniciar.classList.remove("inactive")
+        btnReiniciar.addEventListener("click", () =>{location.reload()})
+    }
 }
