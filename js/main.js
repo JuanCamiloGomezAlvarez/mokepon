@@ -1,28 +1,38 @@
-//Selector del boton de inicio del juego
-const botonMascota = document.querySelector("#botonMascota")
-botonMascota.addEventListener("click", seleccionarMascotaJugador)
+// variable de seccion de seleccionar mascota
+const seleccionarMascota = document.querySelector("#seleccionarMascota")
 
 //variables de seleccion de personajes
 const hipodoge = document.querySelector("#hipodoge")
 const capipepo = document.querySelector("#capipepo")
 const ratigueya = document.querySelector("#ratigueya")
 
+
+//Selector del boton de inicio del juego
+const botonMascota = document.querySelector("#botonMascota")
+botonMascota.addEventListener("click", seleccionarMascotaJugador)
+
+//variable de la seccion de seleccion de ataques
+const seleccionarAtaque = document.querySelector("#seleccionarAtaque")
+seleccionarAtaque.classList.add("inactive")
+
 // variables de nombres de los personajes en la seccion de Elige tu ataque
 const mascotaSeleccionada = document.querySelector("#mascotaSeleccionada")
 const mascotaPC = document.querySelector("#mascotaPC")
-
-//variable del campo de las habilidades
-const habilidades = document.querySelector("#habilidades")
 
 //variables de salud de los personajes
 let saludJugador1 = document.querySelector("#saludJugador1")
 let saludEnemigo1 = document.querySelector("#saludEnemigo1")
 
-// variable del mensaje de combate
+//variable del campo de las habilidades
+const habilidades = document.querySelector("#habilidades")
+
+// variable de la seccion de  mensajes de combate
 const mensajes = document.querySelector("#mensajes")
 
+// estas variables son para la funcion de combate y me permiten trabajar con el personaje seleccionado
 let eleccionJugador = ""
 let eleccionPC = ""
+
 // este objeto contiene a todas las macotas
 const mascotas = {
     "Hipodoge":{
@@ -57,6 +67,7 @@ const mascotas = {
 
 function seleccionarMascotaJugador(){
     if(hipodoge.checked == true){
+
         eleccionJugador = Object.keys(mascotas)[0]
         alert("seleccionaste a Hipodoge")
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
@@ -66,7 +77,8 @@ function seleccionarMascotaJugador(){
                                  <button id="btnFuego3">Esquivar</button>`
 
         seleccionarMascotaPC()
-
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
         //botones de ataque con fuego
 
         const btnFuego1 = document.querySelector("#btnFuego1")
@@ -85,6 +97,8 @@ function seleccionarMascotaJugador(){
                                  <button id="btnAgua2">Escudo de agua</button>
                                  <button id="btnAgua3">Esquivar</button>`
         seleccionarMascotaPC()
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
 
         //botones de ataque con agua
         const btnAgua1 = document.querySelector("#btnAgua1")
@@ -103,6 +117,8 @@ function seleccionarMascotaJugador(){
                                  <button id="btnTierra2">Escudo de roca</button>
                                  <button id="btnTierra3">Esquivar</button>`
         seleccionarMascotaPC()
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
 
         //botones de ataque con tierra
         const btnTierra1 = document.querySelector("#btnTierra1")
@@ -276,6 +292,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     let esquivaJugador = mascotas[eleccionJugador]["esquiva"]
     let esquivaPc = mascotas[eleccionPC]["esquiva"]
     let esquivaHabilidad = 0
+    let escudosUsados = 4
 
     //funcion de aleatoriedad
     function esquivarAleatorio(min, max){
@@ -292,10 +309,13 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
-        let saludJugador = parseInt(saludJugador1.innerText) - defensaPc
+
+        let saludJugador = parseInt(saludJugador1.innerText) - (defensaPc - 10)
         saludJugador1.innerText = String(saludJugador)
+        let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
+        saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.createElement("p")
-        parrafo.innerHTML = `<p>${eleccionPC} de PC refleja ${defensaPc} de daño a ${eleccionJugador} de Jugador al usar la habilidad de Escudo.</p>`
+        parrafo.innerHTML = `<p>${eleccionPC} de PC refleja ${(defensaPc - 10)} de daño a ${eleccionJugador} de Jugador al usar la habilidad de Escudo.</p>`
         mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
