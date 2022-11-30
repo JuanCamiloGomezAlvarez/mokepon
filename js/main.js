@@ -341,7 +341,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - defensaJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionJugador} de Jugador refleja ${defensaJugador} de año a ${eleccionPC} de PC al usar la habilidad de Escudo.`
+        parrafo.innerText = `${eleccionJugador} de Jugador refleja ${defensaJugador} de daño a ${eleccionPC} de PC al usar la habilidad de Escudo.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
