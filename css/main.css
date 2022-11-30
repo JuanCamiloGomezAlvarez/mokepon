@@ -34,13 +34,6 @@ body{
     position: static;
 }
 
-.card-container input{
-    font-size: 10px;
-    position: relative;
-    right: 40px;
-    bottom: 110px;
-}
-
 .cards-mokepon{
     min-width: 200px;
     max-width: 200px;
@@ -52,13 +45,17 @@ body{
     margin-left: 25px;
 }
 
+.cards-mokepon:hover{
+    background-color: #9CFF2E;
+    
+}
+
 .cards-mokepon p{
     margin-top: 2px;
     padding: 5px;
     background-color: #38E54D;
     border-radius:10px 10px 0 0 ;
 }
-
 
 .cards-mokepon img{
     width: 200px;
@@ -68,9 +65,11 @@ body{
     background-color: #38E54D;
 }
 
-.cards-mokepon:hover{
-    background-color: #9CFF2E;
-    
+.card-container input{
+    font-size: 10px;
+    position: relative;
+    right: 40px;
+    bottom: 110px;
 }
 
 .btn-seleccionar{
@@ -88,6 +87,84 @@ body{
     color: white;
 }
 
+.section-ataques{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px ;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.section-ataques h2{
+    margin: 30px auto;
+}
+
+.section-ataques p{
+    width: 80%;
+    line-height: 35px;
+}
+
+.container-habilidades{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn{
+    width: 150px;
+    height: 35px;
+    border: none;
+    border-radius: 8px;
+    background-color: #FDFF00;
+    justify-self: center;
+    align-self: center;
+    font-size: 12px;
+   
+}
+
+.btn:hover{
+    color: white;
+}
+
+.section-mensajes{
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    gap: 35px;
+    margin: 30px auto;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    width: 90%;
+    background-color: #3367eb;
+    overflow-y: auto;
+}
+
+.section-mensajes p {
+    width: 80%;
+    background-color: transparent;
+}
+
+.section-mensajes p::before{
+    content: "-";
+}
+
+.btn-reiniciar{
+    width: 150px;
+    height: 35px;
+    border: none;
+    border-radius: 8px;
+    background-color: #FDFF00;
+    justify-self: center;
+    align-self: center;
+    font-size: 12px;
+}
+
+.btn-reiniciar:hover{
+    color: white;
+}
 
 .inactive{
     display: none;
@@ -96,5 +173,10 @@ body{
 @media screen and (min-width:769px){
     .card-container{
         justify-content: center;
+    }
+
+    .container-habilidades{
+        
+        flex-direction: row;
     }
 }
