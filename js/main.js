@@ -72,27 +72,6 @@ function seleccionarMascotaJugador(){
         alert("seleccionaste a Hipodoge")
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
         saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
-        habilidades.innerHTML = `<button id="btnFuego1" class="btn">Bomba de fuego</button>
-                                 <button id="btnFuego2" class="btn">Escudo de fuego</button>
-                                 <button id="btnFuego3" class="btn">Esquivar</button>`
-
-        seleccionarMascotaPC()
-        seleccionarAtaque.classList.remove("inactive")
-        seleccionarMascota.classList.add("inactive")
-        //botones de ataque con fuego
-
-        const btnFuego1 = document.querySelector("#btnFuego1")
-        btnFuego1.addEventListener("click", ataqueFuego1)       
-        const btnFuego2 = document.querySelector("#btnFuego2")
-        btnFuego2.addEventListener("click", ataqueFuego2)
-        const btnFuego3 = document.querySelector("#btnFuego3")
-        btnFuego3.addEventListener("click", ataqueFuego3)
-        
-    }else if(capipepo.checked == true){
-        eleccionJugador = Object.keys(mascotas)[1]
-        alert("seleccionaste a Capipepo")
-        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
-        saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
         habilidades.innerHTML = `<button id="btnAgua1" class="btn">Chorro de agua</button>
                                  <button id="btnAgua2" class="btn">Escudo de agua</button>
                                  <button id="btnAgua3" class="btn">Esquivar</button>`
@@ -107,10 +86,10 @@ function seleccionarMascotaJugador(){
         btnAgua2.addEventListener("click", ataqueAgua2)
         const btnAgua3 = document.querySelector("#btnAgua3")
         btnAgua3.addEventListener("click", ataqueAgua3)
-
-    }else if(ratigueya.checked == true){
-        eleccionJugador = Object.keys(mascotas)[2]
-        alert("seleccionaste a Ratigueya")
+        
+    }else if(capipepo.checked == true){
+        eleccionJugador = Object.keys(mascotas)[1]
+        alert("seleccionaste a Capipepo")
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
         saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
         habilidades.innerHTML = `<button id="btnTierra1" class="btn">puños de piedra</button>
@@ -127,6 +106,27 @@ function seleccionarMascotaJugador(){
         btnTierra2.addEventListener("click", ataqueTierra2)
         const btnTierra3 = document.querySelector("#btnTierra3")
         btnTierra3.addEventListener("click", ataqueTierra3)
+
+    }else if(ratigueya.checked == true){
+        eleccionJugador = Object.keys(mascotas)[2]
+        alert("seleccionaste a Ratigueya")
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
+        saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
+        habilidades.innerHTML = `<button id="btnFuego1" class="btn">Bomba de fuego</button>
+                                 <button id="btnFuego2" class="btn">Escudo de fuego</button>
+                                 <button id="btnFuego3" class="btn">Esquivar</button>`
+
+        seleccionarMascotaPC()
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
+        //botones de ataque con fuego
+
+        const btnFuego1 = document.querySelector("#btnFuego1")
+        btnFuego1.addEventListener("click", ataqueFuego1)       
+        const btnFuego2 = document.querySelector("#btnFuego2")
+        btnFuego2.addEventListener("click", ataqueFuego2)
+        const btnFuego3 = document.querySelector("#btnFuego3")
+        btnFuego3.addEventListener("click", ataqueFuego3)
     }else{
         alert("aun no seleccionas una mascota")
     }
@@ -247,17 +247,6 @@ function ataqueEnemigo(){
 
     if(mascotaPC.innerText == "Hipodoge"){
         if(ataquePC == 1){
-            alert("PC ataca con Bomba de fuego")
-            return "ataque"
-        }else if(ataquePC == 2){
-            alert("PC usa habilidad de Escudo de fuego")
-            return "defensa"
-        }else{
-            alert("PC usa habilidad de Esquivar")
-            return "esquiva"
-        }
-    }else if(mascotaPC.innerText == "Capipepo"){
-        if(ataquePC == 1){
             alert("PC ataca con Chorro de agua")
             return "ataque"
         }else if(ataquePC == 2){
@@ -267,12 +256,25 @@ function ataqueEnemigo(){
             alert("PC usa habilidad de Esquivar")
             return "esquiva"
         }
-    }else if(mascotaPC.innerText == "Ratigueya"){
+    }else if(mascotaPC.innerText == "Capipepo"){
+        
         if(ataquePC == 1){
             alert("PC ataca con Puños de piedra")
             return "ataque"
         }else if(ataquePC == 2){
             alert("PC usa habilidad de Escudo de roca")
+            return "defensa"
+        }else{
+            alert("PC usa habilidad de Esquivar")
+            return "esquiva"
+        }
+    }else if(mascotaPC.innerText == "Ratigueya"){
+        
+        if(ataquePC == 1){
+            alert("PC ataca con Bomba de fuego")
+            return "ataque"
+        }else if(ataquePC == 2){
+            alert("PC usa habilidad de Escudo de fuego")
             return "defensa"
         }else{
             alert("PC usa habilidad de Esquivar")
@@ -390,12 +392,15 @@ function salud(){
     if(parseInt(saludJugador1.innerText) <= 0 && parseInt(saludEnemigo1.innerText) <= 0){
         alert("AMBOS PERSONAES FUERON ELIMINADOS, ES UN EMPATE")
         habilidades.classList.add("inactive")
+        saludJugador1.classList.add("salud-negativa")
+        saludEnemigo1.classList.add("salud-negativa")
         btnReiniciar = document.querySelector("#btnReiniciar")
         btnReiniciar.classList.remove("inactive")
         btnReiniciar.addEventListener("click", () =>{location.reload()})
     }
     if(parseInt(saludJugador1.innerText) <= 0 && parseInt(saludEnemigo1.innerText) > 0){
         alert("PERDISTE TU PERSONAJE FUE ELIMINADO")
+        saludJugador1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
         btnReiniciar = document.querySelector("#btnReiniciar")
         btnReiniciar.classList.remove("inactive")
@@ -403,6 +408,7 @@ function salud(){
 
     }else if(parseInt(saludEnemigo1.innerText) <= 0 && parseInt(saludJugador1.innerText) > 0){
         alert("GANASTE EL PERSONAJE ENEMIGO FUE ELIMINADO")
+        saludEnemigo1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
         btnReiniciar = document.querySelector("#btnReiniciar")
         btnReiniciar.classList.remove("inactive")

@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="./css/main.css">
     <title>Mokepon</title>
 </head>
-<body>
 
+<body>
     <h1 class="title">MOKEPON!</h1>
 
     <section id="seleccionarMascota" class="section-mascotas">
@@ -35,10 +35,26 @@
     </section>
 
     <section id="seleccionarAtaque" class="section-ataques">
+
         <h2>Personajes</h2>
-        <p>- tu mascota  <span id="mascotaSeleccionada"></span> tiene <span id="saludJugador1"></span>% de vida</p>
-        <p>- la mascota del enemigo <span id="mascotaPC"></span> tiene <span id="saludEnemigo1"></span>% de  vida</p>
+
+        <div class="container-personajes">
+            <div id="personaje-jugador" class="personajes">
+                <!-- <h3>Jugador</h3> -->
+                <span id="mascotaSeleccionada"></span>
+                <!-- <h3>Salud</h3> -->
+                <p><span id="saludJugador1" class="color-salud"></span>%</p>
+            </div>
+            <div id="personaje-pc" class="personajes">
+                <!-- <h3>PC</h3> -->
+                <span id="mascotaPC"></span>
+                <!-- <h3>Salud</h3> -->
+                <p><span id="saludEnemigo1" class="color-salud"></span>%</p>
+            </div>
+        </div>
+        
         <h2>Elige tu ataque</h2>
+
         <div id="habilidades" class="container-habilidades">
             
             <!-- <button id="btnFuego">Fuego</button>
