@@ -1,12 +1,6 @@
 // variable de seccion de seleccionar mascota
 const seleccionarMascota = document.querySelector("#seleccionarMascota")
 
-//variables de seleccion de personajes
-const hipodoge = document.querySelector("#hipodoge")
-const capipepo = document.querySelector("#capipepo")
-const ratigueya = document.querySelector("#ratigueya")
-
-
 //Selector del boton de inicio del juego
 const botonMascota = document.querySelector("#botonMascota")
 botonMascota.addEventListener("click", seleccionarMascotaJugador)
@@ -20,8 +14,8 @@ const mascotaSeleccionada = document.querySelector("#mascotaSeleccionada")
 const mascotaPC = document.querySelector("#mascotaPC")
 
 //variables de salud de los personajes
-let saludJugador1 = document.querySelector("#saludJugador1")
-let saludEnemigo1 = document.querySelector("#saludEnemigo1")
+const saludJugador1 = document.querySelector("#saludJugador1")
+const saludEnemigo1 = document.querySelector("#saludEnemigo1")
 
 //variable del campo de las habilidades
 const habilidades = document.querySelector("#habilidades")
@@ -29,9 +23,52 @@ const habilidades = document.querySelector("#habilidades")
 // variable de la seccion de  mensajes de combate
 const mensajes = document.querySelector("#mensajes")
 
+//variable del contenedor de los mokepones
+const contenedorMokepones = document.querySelector("#contenedor-mokepones")
+
 // estas variables son para la funcion de combate y me permiten trabajar con el personaje seleccionado
 let eleccionJugador = ""
 let eleccionPC = ""
+
+//variable para la impresion de los mokepones
+let pokemonesParaElegir
+
+//clase mokepon
+
+class Mokepon{
+    constructor(nombre, img, salud, ataque, defensa, esquiva){
+        this.nombre = nombre
+        this.img = img
+        this.salud = salud
+        this.ataque = ataque
+        this.defensa = defensa
+        this.esquiva = esquiva
+    }
+}
+let hipodogeObj = new Mokepon("Hipodoge",    "./img/mokepons_mokepon_hipodoge_attack.png", 100, 30, 20, [false, true])
+let capipepoObj = new Mokepon("Capipepo",    "./img/mokepons_mokepon_capipepo_attack.png", 100, 25, 25, [false, true])
+let ratigueyaObj = new Mokepon("Ratigueya", "./img/mokepons_mokepon_ratigueya_attack.png", 100, 20, 30, [false, true])
+
+mokeponesArray = []
+mokeponesArray.push(hipodogeObj, capipepoObj, ratigueyaObj)
+
+//imprimiendo personajes
+mokeponesArray.forEach(mokepon => {
+    pokemonesParaElegir = `
+        <label class="cards-mokepon" id="hipo" for=${mokepon.nombre}>
+        <p>${mokepon.nombre}</p>
+        <img src=${mokepon.img} alt=${mokepon.nombre}>
+        </label>
+        <input  type="radio" name="mascota" id=${mokepon.nombre}>
+    `
+    contenedorMokepones.innerHTML += pokemonesParaElegir
+});
+
+//variables de seleccion de personajes
+const hipodoge = document.querySelector("#Hipodoge")
+const capipepo = document.querySelector("#Capipepo")
+const ratigueya = document.querySelector("#Ratigueya")
+
 
 // este objeto contiene a todas las macotas
 const mascotas = {
@@ -68,10 +105,10 @@ const mascotas = {
 function seleccionarMascotaJugador(){
     if(hipodoge.checked == true){
 
-        eleccionJugador = Object.keys(mascotas)[0]
-        alert("seleccionaste a Hipodoge")
-        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
-        saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
+        eleccionJugador = mokeponesArray[0]
+        //alert("seleccionaste a Hipodoge")
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        saludJugador1.innerText = mokeponesArray[0].salud
         habilidades.innerHTML = `<button id="btnAgua1" class="btn">Chorro de agua</button>
                                  <button id="btnAgua2" class="btn">Escudo de agua</button>
                                  <button id="btnAgua3" class="btn">Esquivar</button>`
@@ -88,10 +125,10 @@ function seleccionarMascotaJugador(){
         btnAgua3.addEventListener("click", ataqueAgua3)
         
     }else if(capipepo.checked == true){
-        eleccionJugador = Object.keys(mascotas)[1]
-        alert("seleccionaste a Capipepo")
-        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
-        saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
+        eleccionJugador = mokeponesArray[1]
+        //alert("seleccionaste a Capipepo")
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        saludJugador1.innerText = mokeponesArray[1].salud
         habilidades.innerHTML = `<button id="btnTierra1" class="btn">puños de piedra</button>
                                  <button id="btnTierra2" class="btn">Escudo de roca</button>
                                  <button id="btnTierra3" class="btn">Esquivar</button>`
@@ -108,10 +145,10 @@ function seleccionarMascotaJugador(){
         btnTierra3.addEventListener("click", ataqueTierra3)
 
     }else if(ratigueya.checked == true){
-        eleccionJugador = Object.keys(mascotas)[2]
-        alert("seleccionaste a Ratigueya")
-        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador}</strong>`
-        saludJugador1.innerText = mascotas[eleccionJugador]["salud"]
+        eleccionJugador = mokeponesArray[2]
+        //alert("seleccionaste a Ratigueya")
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        saludJugador1.innerText = mokeponesArray[2].salud
         habilidades.innerHTML = `<button id="btnFuego1" class="btn">Bomba de fuego</button>
                                  <button id="btnFuego2" class="btn">Escudo de fuego</button>
                                  <button id="btnFuego3" class="btn">Esquivar</button>`
@@ -146,19 +183,19 @@ function seleccionarMascotaPC(){
 
     if(pcElige == 1){
         alert("PC eligio a Hipodoge")
-        eleccionPC = Object.keys(mascotas)[0]
-        mascotaPC.innerHTML = `<strong>${eleccionPC}</strong>`
-        saludEnemigo1.innerText = mascotas[eleccionPC]["salud"]
+        eleccionPC = mokeponesArray[0]
+        mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
+        saludEnemigo1.innerText = mokeponesArray[0].salud
     }else if(pcElige == 2){
         alert("PC eligio a Capipepo")
-        eleccionPC = Object.keys(mascotas)[1]
-        mascotaPC.innerHTML = `<strong>${eleccionPC}</strong>`
-        saludEnemigo1.innerText = mascotas[eleccionPC]["salud"]
+        eleccionPC = mokeponesArray[1]
+        mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
+        saludEnemigo1.innerText = mokeponesArray[1].salud
     }else{
         alert("PC eligio a Ratigueya")
-        eleccionPC = Object.keys(mascotas)[2]
-        mascotaPC.innerHTML = `<strong>${eleccionPC}</strong>`
-        saludEnemigo1.innerText = mascotas[eleccionPC]["salud"]
+        eleccionPC = mokeponesArray[2]
+        mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
+        saludEnemigo1.innerText = mokeponesArray[2].salud
     }
 }
 
@@ -166,15 +203,15 @@ function seleccionarMascotaPC(){
 //fuego
 
 function ataqueFuego1(){
-alert("hiciste un ataque con Bomba de fuego")
-let valorJugador = "ataque"
-let valorEnemigo = ataqueEnemigo()
-let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-return resultadoRonda
-
+    //lert("hiciste un ataque con Bomba de fuego")
+    let valorJugador = "ataque"
+    let valorEnemigo = ataqueEnemigo()
+    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+    return resultadoRonda
 }
+
 function ataqueFuego2(){
-    alert("Usaste la habilidad Escudo de fuego")
+    //alert("Usaste la habilidad Escudo de fuego")
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -182,7 +219,7 @@ function ataqueFuego2(){
     
 }
 function ataqueFuego3(){
-    alert("Usaste la habilidad Esquivar")
+    //alert("Usaste la habilidad Esquivar")
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -190,21 +227,21 @@ function ataqueFuego3(){
 }
 //agua
 function ataqueAgua1(){
-    alert("Atacaste con Chorro de agua")
+    //alert("Atacaste con Chorro de agua")
     let valorJugador = "ataque"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda
 }
 function ataqueAgua2(){
-    alert("Usaste la habilidad Escudo de agua")
+    //alert("Usaste la habilidad Escudo de agua")
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda 
 }
 function ataqueAgua3(){
-    alert("Usaste la habilidad Esquivar")
+    //alert("Usaste la habilidad Esquivar")
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -212,21 +249,21 @@ function ataqueAgua3(){
 }
 //tierra
 function ataqueTierra1(){
-    alert("Atacaste con Puños de piedra")
+    //alert("Atacaste con Puños de piedra")
     let valorJugador = "ataque"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda
 }
 function ataqueTierra2(){
-    alert("Usaste la habilidad Escudo de roca")
+    //alert("Usaste la habilidad Escudo de roca")
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda 
 }
 function ataqueTierra3(){
-    alert("Usaste la habilidad esquivar")
+    //alert("Usaste la habilidad esquivar")
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -289,12 +326,12 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
 
     mensajes.classList.remove("inactive")
 
-    let ataqueJugador = mascotas[eleccionJugador]["ataque"]
-    let ataquePc = mascotas[eleccionPC]["ataque"]
-    let defensaJugador = mascotas[eleccionJugador]["defensa"]
-    let defensaPc = mascotas[eleccionPC]["defensa"]
-    let esquivaJugador = mascotas[eleccionJugador]["esquiva"]
-    let esquivaPc = mascotas[eleccionPC]["esquiva"]
+    let ataqueJugador = eleccionJugador.ataque
+    let ataquePc = eleccionPC.ataque
+    let defensaJugador = eleccionJugador.defensa
+    let defensaPc = eleccionPC.defensa
+    let esquivaJugador = eleccionJugador.esquiva
+    let esquivaPc = eleccionPC.esquiva
     let esquivaHabilidad = 0
     let escudosUsados = 4
 
@@ -309,7 +346,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionJugador} de Jugador inflinge ${ataqueJugador} de daño a ${eleccionPC} de PC. ${eleccionPC} de PC inflinge ${ataquePc} de daño a ${eleccionJugador} de Jugador.`
+        parrafo.innerText = `${eleccionJugador.nombre} de Jugador inflinge ${ataqueJugador} de daño a ${eleccionPC.nombre} de PC. ${eleccionPC.nombre} de PC inflinge ${ataquePc} de daño a ${eleccionJugador.nombre} de Jugador.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
@@ -319,7 +356,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionPC} de PC refleja ${(defensaPc - 10)} de daño a ${eleccionJugador} de Jugador al usar la habilidad de Escudo.`
+        parrafo.innerText = `${eleccionPC.nombre} de PC refleja ${(defensaPc - 10)} de daño a ${eleccionJugador.nombre} de Jugador al usar la habilidad de Escudo.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
@@ -328,14 +365,14 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = ` ${eleccionPC} de PC no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
+            parrafo.innerText = ` ${eleccionPC.nombre} de PC no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
             // mensajes.appendChild(parrafo)
             salud()
         }else{
             let saludEnemigo = parseInt(saludEnemigo1.innerText) + ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = ` ${eleccionPC} de PC pudo esquivar el ataque con exito y restaura ${ataqueJugador} de salud.`
+            parrafo.innerText = ` ${eleccionPC.nombre} de PC pudo esquivar el ataque con exito y restaura ${ataqueJugador} de salud.`
             // mensajes.appendChild(parrafo)
             salud()
         }
@@ -343,7 +380,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - defensaJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionJugador} de Jugador refleja ${defensaJugador} de daño a ${eleccionPC} de PC al usar la habilidad de Escudo.`
+        parrafo.innerText = `${eleccionJugador.nombre} de Jugador refleja ${defensaJugador} de daño a ${eleccionPC.nombre} de PC al usar la habilidad de Escudo.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
@@ -362,14 +399,14 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
             saludJugador1.innerText = String(saludJugador)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = `${eleccionJugador} de Jugador no pudo esquivar el ataque y recibe ${ataquePc} de daño.`
+            parrafo.innerText = `${eleccionJugador.nombre} de Jugador no pudo esquivar el ataque y recibe ${ataquePc} de daño.`
             // mensajes.appendChild(parrafo)
             salud()
         }else{
             let saludJugador = parseInt(saludJugador1.innerText) + ataquePc
             saludJugador1.innerText = String(saludJugador)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = `${eleccionJugador} de Jugador pudo esquivar el ataque con exito y restaura ${ataquePc} de salud.`
+            parrafo.innerText = `${eleccionJugador.nombre} de Jugador pudo esquivar el ataque con exito y restaura ${ataquePc} de salud.`
             // mensajes.appendChild(parrafo)
             salud()
         }
