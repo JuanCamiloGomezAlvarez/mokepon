@@ -368,7 +368,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionJugador.nombre} de Jugador inflinge ${ataqueJugador} de daño a ${eleccionPC.nombre} de PC con ${habilidadUsadaJugador[0].nombre}. ${eleccionPC.nombre} de PC inflinge ${ataquePc} de daño a ${eleccionJugador.nombre} de Jugador con ${habilidadUsadaPc[0].nombre}.`
+        parrafo.innerText = `Mascota de Jugador inflinge ${ataqueJugador} de daño a mascota de  PC con ${habilidadUsadaJugador[0].nombre}. Mascota de PC inflinge ${ataquePc} de daño a mascota de Jugador con ${habilidadUsadaPc[0].nombre}.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
@@ -378,7 +378,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionPC.nombre} de PC refleja ${(defensaPc - 10)} de daño a ${eleccionJugador.nombre} de Jugador al usar la habilidad de Escudo, pero sufre 10 de daño.`
+        parrafo.innerText = `Mascota de PC refleja ${(defensaPc - 10)} de daño a mascota de Jugador al usar la habilidad de Escudo, pero sufre 10 de daño.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
@@ -387,20 +387,20 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = ` ${eleccionPC.nombre} usa la habilidad ${habilidadUsadaPc[2].nombre}, pero no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
+            parrafo.innerText = `Mascota PC usa la habilidad ${habilidadUsadaPc[2].nombre}, pero no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
             // mensajes.appendChild(parrafo)
             salud()
         }else{
                 if(parseInt(saludEnemigo1.innerText) >= 90){
                     saludEnemigo1.innerText = "100"
                     let parrafo = document.getElementById("msj")
-                    parrafo.innerText = ` ${eleccionPC.nombre} de PC usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura su salud.`
+                    parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura su salud.`
                     // mensajes.appendChild(parrafo)
                 }else{
                     let saludEnemigo = parseInt(saludEnemigo1.innerText) + 10
                     saludEnemigo1.innerText = String(saludEnemigo)
                     let parrafo = document.getElementById("msj")
-                    parrafo.innerText = ` ${eleccionPC.nombre} de PC usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura 10 de salud.`
+                    parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura 10 de salud.`
                     // mensajes.appendChild(parrafo)
                     salud()
                 }
@@ -412,7 +412,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludJugador = parseInt(saludJugador1.innerText) - 10
         saludJugador1.innerText = String(saludJugador)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = ` ${eleccionPC.nombre} de PC ataca con ${habilidadUsadaPc[0].nombre}, ${eleccionJugador.nombre} de Jugador refleja ${defensaJugador} de daño a ${eleccionPC.nombre} de PC al usar la habilidad de Escudo. pero sufre 10 de daño`
+        parrafo.innerText = `Mascota de PC ataca con ${habilidadUsadaPc[0].nombre}, Mascota de Jugador refleja ${defensaJugador} de daño al usar la habilidad de Escudo. pero sufre 10 de daño`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
@@ -422,7 +422,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         
     }else if(valorJugador == "defensa" && valorEnemigo == "esquiva"){
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionPC.nombre} de PC usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
+        parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
         
     }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
@@ -431,19 +431,19 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
             saludJugador1.innerText = String(saludJugador)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = `${eleccionJugador.nombre} de Jugador no pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} y recibe ${ataquePc} de daño.`
+            parrafo.innerText = `Mascota de Jugador no pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} y recibe ${ataquePc} de daño.`
             // mensajes.appendChild(parrafo)
             salud()
         }else{
                 if(parseInt(saludJugador1.innerText) >= 90){
                     saludJugador1.innerText = "100"
                     let parrafo = document.getElementById("msj")
-                    parrafo.innerText = `${eleccionJugador.nombre} de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} con exito y restaura su salud.`
+                    parrafo.innerText = `Mascota de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} con exito y restaura su salud.`
                 }else{
                     let saludJugador = parseInt(saludJugador1.innerText) + 10
                     saludJugador1.innerText = String(saludJugador)
                     let parrafo = document.getElementById("msj")
-                    parrafo.innerText = `${eleccionJugador.nombre} de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} con exito y restaura 10 de salud.`
+                    parrafo.innerText = `Mascota de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} con exito y restaura 10 de salud.`
                 }
             
             // mensajes.appendChild(parrafo)
@@ -451,7 +451,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         }
     }else if(valorJugador == "esquiva" && valorEnemigo == "defensa"){
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `${eleccionPC.nombre} de PC usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
+        parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
     }else if(valorJugador == "esquiva" && valorEnemigo == "esquiva"){
         let parrafo = document.getElementById("msj")
@@ -466,7 +466,11 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
 function salud(){
 
     if(parseInt(saludJugador1.innerText) <= 0 && parseInt(saludEnemigo1.innerText) <= 0){
-        alert("AMBOS PERSONAES FUERON ELIMINADOS, ES UN EMPATE")
+        Swal.fire({
+            icon: "warning",
+            text: "AMBOS PERSONAES FUERON ELIMINADOS, ES UN EMPATE",
+            color: "#FDFF00"
+        })
         saludJugador1.innerHTML = "0"
         saludEnemigo1.innerHTML = "0"
         habilidades.classList.add("inactive")
@@ -477,7 +481,11 @@ function salud(){
         btnReiniciar.addEventListener("click", () =>{location.reload()})
     }
     if(parseInt(saludJugador1.innerText) <= 0 && parseInt(saludEnemigo1.innerText) > 0){
-        alert("PERDISTE TU PERSONAJE FUE ELIMINADO")
+        Swal.fire({
+            icon: "error",
+            text: "PERDISTE TU PERSONAJE FUE ELIMINADO",
+            color: "rgb(197, 42, 42)"
+        })
         saludJugador1.innerHTML = "0"
         saludJugador1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
@@ -486,7 +494,11 @@ function salud(){
         btnReiniciar.addEventListener("click", () =>{location.reload()})
 
     }else if(parseInt(saludEnemigo1.innerText) <= 0 && parseInt(saludJugador1.innerText) > 0){
-        alert("GANASTE EL PERSONAJE ENEMIGO FUE ELIMINADO")
+        Swal.fire({
+            icon: "success",
+            text: "GANASTE EL PERSONAJE ENEMIGO FUE ELIMINADO",
+            color: "#38E54D"
+        })
         saludEnemigo1.innerHTML = "0"
         saludEnemigo1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
