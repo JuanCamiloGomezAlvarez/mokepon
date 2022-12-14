@@ -180,7 +180,11 @@ function seleccionarMascotaJugador(){
         const btnFuego3 = document.querySelector("#btnFuego3")
         btnFuego3.addEventListener("click", ataqueFuego3)
     }else{
-        alert("aun no seleccionas una mascota")
+        Swal.fire({
+            icon: "warning",
+            text: "aun no seleccionas una mascota",
+            color: "#FDFF00"
+        })
     }
     
 }
