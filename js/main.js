@@ -26,6 +26,12 @@ const mensajes = document.querySelector("#mensajes")
 //variable del contenedor de los mokepones
 const contenedorMokepones = document.querySelector("#contenedor-mokepones")
 
+//variables de la seccion del mapa con canvas
+const sectionMapa = document.querySelector("#sectionMapa")
+const mapa = document.querySelector("#mapa")
+let lienzo = mapa.getContext("2d")
+let intervalo
+
 // estas variables son para la funcion de combate y me permiten trabajar con el personaje seleccionado
 let eleccionJugador = ""
 let eleccionPC = ""
@@ -44,6 +50,14 @@ class Mokepon{
         this.defensa = defensa
         this.esquiva = esquiva
         this.habilidades = habilidades
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = img
+        this.velocidadX = 0
+        this.velocidadY = 0
     }
 }
 let hipodogeObj = new Mokepon("Hipodoge", "./img/mokepons_mokepon_hipodoge_attack.png", 100, 30, 20, [false, true], [{nombre:"Chorro de agua",id:"btnAgua1"},{nombre:"Escudo de agua", id:"btnAgua2"},{nombre:"Esquivar", id:"btnAgua3"}])
@@ -72,37 +86,94 @@ const ratigueya = document.querySelector("#Ratigueya")
 
 
 // este objeto contiene a todas las macotas
-const mascotas = {
-    "Hipodoge":{
-                "salud": 100,
-                "ataque": 30,
-                "defensa":20,
-                "esquiva":{
-                            1: false,
-                            2: true
-                        },
-                },
-    "Capipepo":{
-                "salud": 100,
-                "ataque": 25,
-                "defensa":25,
-                "esquiva":{
-                            1: false,
-                            2: true
-                        },
-                },
-    "Ratigueya":{
-                "salud": 100,
-                "ataque": 20,
-                "defensa":30,
-                "esquiva":{
-                            1: false,
-                            2: true
-                        },
-                }
+// const mascotas = {
+//     "Hipodoge":{
+//                 "salud": 100,
+//                 "ataque": 30,
+//                 "defensa":20,
+//                 "esquiva":{
+//                             1: false,
+//                             2: true
+//                         },
+//                 },
+//     "Capipepo":{
+//                 "salud": 100,
+//                 "ataque": 25,
+//                 "defensa":25,
+//                 "esquiva":{
+//                             1: false,
+//                             2: true
+//                         },
+//                 },
+//     "Ratigueya":{
+//                 "salud": 100,
+//                 "ataque": 20,
+//                 "defensa":30,
+//                 "esquiva":{
+//                             1: false,
+//                             2: true
+//                         },
+//                 }
 
+// }
+
+//trabajando con canvas
+
+function pintarPersonaje(){
+    capipepoObj.x = capipepoObj.x + capipepoObj.velocidadX
+    capipepoObj.y = capipepoObj.y + capipepoObj.velocidadY
+    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+    lienzo.drawImage( capipepoObj.mapaFoto, capipepoObj.x, capipepoObj.y, capipepoObj.alto, capipepoObj.ancho)
 }
 
+intervalo = setInterval(pintarPersonaje, 50 )
+
+
+window.addEventListener("keydown", botonOprimido)
+window.addEventListener("keyup", detenerMovimiento)
+
+function moverDerecha(){
+    capipepoObj.velocidadX =  5
+    // pintarPersonaje()
+}
+function moverAbajo(){
+    capipepoObj.velocidadY =  5
+    // pintarPersonaje()
+}
+function moverIzquierda(){
+    capipepoObj.velocidadX =  - 5
+    // pintarPersonaje()
+}
+function moverArriba(){
+    capipepoObj.velocidadY =  - 5
+    // pintarPersonaje()
+}
+function detenerMovimiento(){
+    capipepoObj.velocidadX = 0
+    capipepoObj.velocidadY = 0
+}
+
+
+function botonOprimido(event){
+    switch (event.key) {
+        case "ArrowUp":
+            moverArriba()
+            break;
+        case "ArrowDown":
+            moverAbajo()
+            break;
+        case "ArrowRight":
+            moverDerecha()
+            break;
+        case "ArrowLeft":
+            moverIzquierda()            
+            break;
+        default:
+            break;
+    }
+}
+
+// impresion de los botenes de las habilidades
 function habilidadesElegidas(mokeponElegido){
     let ataque = mokeponElegido[0]
     let defensa = mokeponElegido[1]
@@ -113,6 +184,7 @@ function habilidadesElegidas(mokeponElegido){
                              <button id=${esquiva.id} class="btn">${esquiva.nombre}</button>`
 }
 
+//seleccion de la mascota
 function seleccionarMascotaJugador(){
     if(hipodoge.checked == true){
 
@@ -235,7 +307,6 @@ function seleccionarMascotaPC(){
 
 //Funciones de habilidades de los personajes
 //fuego
-
 function ataqueFuego1(){
     //lert("hiciste un ataque con Bomba de fuego")
     let valorJugador = "ataque"
@@ -302,7 +373,6 @@ function ataqueTierra3(){
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda
 }
-
 
 // esta es la funcion de ataque enemigo
 function ataqueEnemigo(){
@@ -467,6 +537,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     }
 }
 
+//funcion de la salud de los personajes
 function salud(){
 
     if(parseInt(saludJugador1.innerText) <= 0 && parseInt(saludEnemigo1.innerText) <= 0){

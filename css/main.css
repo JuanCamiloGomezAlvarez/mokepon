@@ -88,6 +88,13 @@ body{
     color: white;
 }
 
+
+.canvas{
+    border: 1px solid #000;
+    width: 500px;
+    height: 200px;
+}
+
 .section-ataques{
     display: flex;
     flex-direction: column;
