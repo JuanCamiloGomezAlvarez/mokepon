@@ -90,9 +90,13 @@ body{
 
 
 .canvas{
-    border: 1px solid #000;
-    width: 500px;
-    height: 200px;
+    margin-top: 20px;
+    border: 3px solid #38E54D ;
+    width: 320px;
+    height: 153px;
+    background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20210306/pngtree-modern-versus-battle-contestant-fighters-or-teams-with-stage-light-effect-image_580417.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .section-ataques{
@@ -213,6 +217,13 @@ body{
     display: none;
 }
 
+@media screen and (min-width: 426px){
+    .canvas{
+        min-width: 430px;
+        height: 205px;
+    }
+}
+
 @media screen and (min-width:769px){
     .card-container{
         justify-content: center;
@@ -227,5 +238,10 @@ body{
         
         margin-top: 0px;
         background-color: transparent;
+    }
+
+    .canvas{
+        width: 740px;
+        height: 350px;
     }
 }
