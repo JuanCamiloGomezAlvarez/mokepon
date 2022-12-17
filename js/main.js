@@ -50,19 +50,36 @@ class Mokepon{
         this.defensa = defensa
         this.esquiva = esquiva
         this.habilidades = habilidades
-        this.x = 20
-        this.y = 30
+        this.x = 18
+        this.y = 45
         this.ancho = 80
         this.alto = 80
+        this.xAtaqueJugador = 98
+        this.yAtaqueJugador = 65
+        this.anchoAtaqueJugador = 50
+        this.altoAtaqueJugador = 50
+        this.xAtaquePc = 158
+        this.yAtaquePc = 65
+        this.anchoAtaquePc = 50
+        this.altoAtaquePc = 50
         this.mapaFoto = new Image()
         this.mapaFoto.src = img
-        this.velocidadX = 0
-        this.velocidadY = 0
+        this.ataqueImg = new Image()
+        this.ataqueImg.src = habilidades[0].img[0]
+        this.defensaImg = new Image()
+        this.ataqueImgPc = new Image()
+        this.ataqueImgPc.src = habilidades[0].img[1]
+        this.defensaImg.src = habilidades[1].img
+        this.esquivaImg = new Image()
+        this.esquivaImg.src = habilidades[2].img
+        // this.habilidadUsada = new Image()
+        // this.velocidadX = 0
+        // this.velocidadY = 0
     }
 }
-let hipodogeObj = new Mokepon("Hipodoge", "./img/mokepons_mokepon_hipodoge_attack.png", 100, 30, 20, [false, true], [{nombre:"Chorro de agua",id:"btnAgua1"},{nombre:"Escudo de agua", id:"btnAgua2"},{nombre:"Esquivar", id:"btnAgua3"}])
-let capipepoObj = new Mokepon("Capipepo", "./img/mokepons_mokepon_capipepo_attack.png", 100, 25, 25, [false, true], [{nombre:"Puños de piedra",id:"btnTierra1"},{nombre:"Escudo de roca", id:"btnTierra2"},{nombre:"Esquivar", id:"btnTierra3"}])
-let ratigueyaObj = new Mokepon("Ratigueya", "./img/mokepons_mokepon_ratigueya_attack.png", 100, 20, 30, [false, true], [{nombre:"Bomba de fuego",id:"btnFuego1"},{nombre:"Escudo de fuego", id:"btnFuego2"},{nombre:"Esquivar", id:"btnFuego3"}])
+let hipodogeObj = new Mokepon("Hipodoge", "./img/mokepons_mokepon_hipodoge_attack.png", 100, 30, 20, [false, true], [{nombre:"Chorro de agua",id:"btnAgua1", img:["./img/chorro-agua.png","./img/chorro-agua-invertida.png"]},{nombre:"Escudo de agua", id:"btnAgua2",img:"./img/escudo-agua.png"},{nombre:"Esquivar", id:"btnAgua3",img:"./img/esquivar.png"}])
+let capipepoObj = new Mokepon("Capipepo", "./img/mokepons_mokepon_capipepo_attack.png", 100, 25, 25, [false, true], [{nombre:"Puños de piedra",id:"btnTierra1",img:["./img/puños-piedra.png","./img/puños-piedra-invertida.png"]},{nombre:"Escudo de roca", id:"btnTierra2", img:"./img/escudo-piedra.png"},{nombre:"Esquivar", id:"btnTierra3", img:"./img/esquivar.png"}])
+let ratigueyaObj = new Mokepon("Ratigueya", "./img/mokepons_mokepon_ratigueya_attack.png", 100, 20, 30, [false, true], [{nombre:"Bomba de fuego",id:"btnFuego1", img:["./img/bomba-fuego.png","./img/bomba-fuego-invertida.png"]},{nombre:"Escudo de fuego", id:"btnFuego2", img:"./img/escudo-fuego.png"},{nombre:"Esquivar", id:"btnFuego3", img:"./img/esquivar.png"}])
 
 mokeponesArray = []
 mokeponesArray.push(hipodogeObj, capipepoObj, ratigueyaObj)
@@ -119,59 +136,78 @@ const ratigueya = document.querySelector("#Ratigueya")
 
 //trabajando con canvas
 
-function pintarPersonaje(){
-    capipepoObj.x = capipepoObj.x + capipepoObj.velocidadX
-    capipepoObj.y = capipepoObj.y + capipepoObj.velocidadY
+function pintarPersonajeJugador(personaje){
+
+    personaje.x = personaje.x 
+    personaje.y = personaje.y
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
-    lienzo.drawImage( capipepoObj.mapaFoto, capipepoObj.x, capipepoObj.y, capipepoObj.alto, capipepoObj.ancho)
+    lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
 }
 
-intervalo = setInterval(pintarPersonaje, 50 )
+function pintarPersonajeEnemigo(personaje){
 
-
-window.addEventListener("keydown", botonOprimido)
-window.addEventListener("keyup", detenerMovimiento)
-
-function moverDerecha(){
-    capipepoObj.velocidadX =  5
-    // pintarPersonaje()
-}
-function moverAbajo(){
-    capipepoObj.velocidadY =  5
-    // pintarPersonaje()
-}
-function moverIzquierda(){
-    capipepoObj.velocidadX =  - 5
-    // pintarPersonaje()
-}
-function moverArriba(){
-    capipepoObj.velocidadY =  - 5
-    // pintarPersonaje()
-}
-function detenerMovimiento(){
-    capipepoObj.velocidadX = 0
-    capipepoObj.velocidadY = 0
+    personaje.x = personaje.x + 185
+    personaje.y = personaje.y
+    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+    lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
 }
 
-
-function botonOprimido(event){
-    switch (event.key) {
-        case "ArrowUp":
-            moverArriba()
-            break;
-        case "ArrowDown":
-            moverAbajo()
-            break;
-        case "ArrowRight":
-            moverDerecha()
-            break;
-        case "ArrowLeft":
-            moverIzquierda()            
-            break;
-        default:
-            break;
-    }
+function pintarHabilidadJugador(personaje, habilidad){
+    //lienzo.clearRect(95,50,100, 100)
+    lienzo.drawImage(habilidad, personaje.xAtaqueJugador, personaje.yAtaqueJugador, personaje.altoAtaqueJugador, personaje.anchoAtaqueJugador)
 }
+
+function pintarHabilidadPc(personaje, habilidad){
+    
+    lienzo.drawImage(habilidad, personaje.xAtaquePc, personaje.yAtaquePc, personaje.altoAtaquePc, personaje.anchoAtaquePc)
+}
+
+//intervalo = setInterval(pintarPersonajeJugador, 50 )
+
+
+// window.addEventListener("keydown", botonOprimido)
+// window.addEventListener("keyup", detenerMovimiento)
+
+// function moverDerecha(){
+//     capipepoObj.velocidadX =  5
+//     // pintarPersonaje()
+// }
+// function moverAbajo(){
+//     capipepoObj.velocidadY =  5
+//     // pintarPersonaje()
+// }
+// function moverIzquierda(){
+//     capipepoObj.velocidadX =  - 5
+//     // pintarPersonaje()
+// }
+// function moverArriba(){
+//     capipepoObj.velocidadY =  - 5
+//     // pintarPersonaje()
+// }
+// function detenerMovimiento(){
+//     capipepoObj.velocidadX = 0
+//     capipepoObj.velocidadY = 0
+// }
+
+
+// function botonOprimido(event){
+//     switch (event.key) {
+//         case "ArrowUp":
+//             moverArriba()
+//             break;
+//         case "ArrowDown":
+//             moverAbajo()
+//             break;
+//         case "ArrowRight":
+//             moverDerecha()
+//             break;
+//         case "ArrowLeft":
+//             moverIzquierda()            
+//             break;
+//         default:
+//             break;
+//     }
+// }
 
 // impresion de los botenes de las habilidades
 function habilidadesElegidas(mokeponElegido){
@@ -194,12 +230,15 @@ function seleccionarMascotaJugador(){
         
         saludJugador1.innerText = mokeponesArray[0].salud
 
+        pintarPersonajeJugador(eleccionJugador)
+
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
         
         seleccionarMascotaPC()
         seleccionarAtaque.classList.remove("inactive")
         seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
 
         //botones de ataque con agua
         const btnAgua1 = document.querySelector("#btnAgua1")
@@ -215,12 +254,15 @@ function seleccionarMascotaJugador(){
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
         saludJugador1.innerText = mokeponesArray[1].salud
 
+        pintarPersonajeJugador(eleccionJugador)
+
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
         
         seleccionarMascotaPC()
         seleccionarAtaque.classList.remove("inactive")
         seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
 
         //botones de ataque con tierra
         const btnTierra1 = document.querySelector("#btnTierra1")
@@ -236,6 +278,8 @@ function seleccionarMascotaJugador(){
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
         saludJugador1.innerText = mokeponesArray[2].salud
 
+        pintarPersonajeJugador(eleccionJugador)
+
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
         
@@ -243,6 +287,7 @@ function seleccionarMascotaJugador(){
 
         seleccionarAtaque.classList.remove("inactive")
         seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
         //botones de ataque con fuego
 
         const btnFuego1 = document.querySelector("#btnFuego1")
@@ -280,6 +325,7 @@ function seleccionarMascotaPC(){
             
         })
         eleccionPC = mokeponesArray[0]
+        pintarPersonajeEnemigo(eleccionPC)
         mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
         saludEnemigo1.innerText = mokeponesArray[0].salud
     }else if(pcElige == 2){
@@ -290,6 +336,7 @@ function seleccionarMascotaPC(){
             
         })
         eleccionPC = mokeponesArray[1]
+        pintarPersonajeEnemigo(eleccionPC)
         mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
         saludEnemigo1.innerText = mokeponesArray[1].salud
     }else{
@@ -300,6 +347,7 @@ function seleccionarMascotaPC(){
             
         })
         eleccionPC = mokeponesArray[2]
+        pintarPersonajeEnemigo(eleccionPC)
         mascotaPC.innerHTML = `<strong>${eleccionPC.nombre}</strong>`
         saludEnemigo1.innerText = mokeponesArray[2].salud
     }
@@ -309,6 +357,7 @@ function seleccionarMascotaPC(){
 //fuego
 function ataqueFuego1(){
     //lert("hiciste un ataque con Bomba de fuego")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "ataque"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -316,6 +365,7 @@ function ataqueFuego1(){
 } 
 function ataqueFuego2(){
     //alert("Usaste la habilidad Escudo de fuego")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -324,6 +374,7 @@ function ataqueFuego2(){
 }
 function ataqueFuego3(){
     //alert("Usaste la habilidad Esquivar")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -332,6 +383,7 @@ function ataqueFuego3(){
 //agua
 function ataqueAgua1(){
     //alert("Atacaste con Chorro de agua")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "ataque"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -339,6 +391,7 @@ function ataqueAgua1(){
 }
 function ataqueAgua2(){
     //alert("Usaste la habilidad Escudo de agua")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -346,6 +399,7 @@ function ataqueAgua2(){
 }
 function ataqueAgua3(){
     //alert("Usaste la habilidad Esquivar")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -354,6 +408,7 @@ function ataqueAgua3(){
 //tierra
 function ataqueTierra1(){
     //alert("Atacaste con Puños de piedra")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "ataque"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -361,6 +416,7 @@ function ataqueTierra1(){
 }
 function ataqueTierra2(){
     //alert("Usaste la habilidad Escudo de roca")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "defensa"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -368,6 +424,7 @@ function ataqueTierra2(){
 }
 function ataqueTierra3(){
     //alert("Usaste la habilidad esquivar")
+    lienzo.clearRect(95,50,120, 100)
     let valorJugador = "esquiva"
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
@@ -437,6 +494,12 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     }
 
     if(valorJugador == "ataque" && valorEnemigo == "ataque"){
+        let habilidad = eleccionJugador.ataqueImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.ataqueImgPc
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        // pintarPersonajeJugador(eleccionJugador)
+        // pintarPersonajeEnemigo(eleccionPC)
         let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
         saludJugador1.innerText = String(saludJugador)
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
@@ -446,7 +509,10 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
-
+        let habilidad = eleccionJugador.ataqueImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let saludJugador = parseInt(saludJugador1.innerText) - (defensaPc - 10)
         saludJugador1.innerText = String(saludJugador)
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
@@ -458,6 +524,10 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
         esquivaHabilidad = esquivarAleatorio(1,2)
         if(esquivaPc[esquivaHabilidad] == false){
+            let habilidad = eleccionJugador.ataqueImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.esquivaImg
+            pintarHabilidadPc(eleccionPC, habilidadPc)
             let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
             let parrafo = document.getElementById("msj")
@@ -466,11 +536,19 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             salud()
         }else{
                 if(parseInt(saludEnemigo1.innerText) >= 90){
+                    let habilidad = eleccionJugador.ataqueImg
+                    pintarHabilidadJugador(eleccionJugador, habilidad)
+                    let habilidadPc = eleccionPC.esquivaImg
+                    pintarHabilidadPc(eleccionPC, habilidadPc)
                     saludEnemigo1.innerText = "100"
                     let parrafo = document.getElementById("msj")
                     parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura su salud.`
                     // mensajes.appendChild(parrafo)
                 }else{
+                    let habilidad = eleccionJugador.ataqueImg
+                    pintarHabilidadJugador(eleccionJugador, habilidad)
+                    let habilidadPc = eleccionPC.esquivaImg
+                    pintarHabilidadPc(eleccionPC, habilidadPc)
                     let saludEnemigo = parseInt(saludEnemigo1.innerText) + 10
                     saludEnemigo1.innerText = String(saludEnemigo)
                     let parrafo = document.getElementById("msj")
@@ -481,6 +559,10 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             
         }
     }else if(valorJugador == "defensa" && valorEnemigo == "ataque"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.ataqueImgPc
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - defensaJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let saludJugador = parseInt(saludJugador1.innerText) - 10
@@ -490,11 +572,19 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
         parrafo.innerText = `Ambos personajes se defienden y ninguno sufre daño.`
         // mensajes.appendChild(parrafo)
         
     }else if(valorJugador == "defensa" && valorEnemigo == "esquiva"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.esquivaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
         parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
@@ -502,6 +592,10 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
         esquivaHabilidad = esquivarAleatorio(1,2)
         if(esquivaJugador[esquivaHabilidad] == false){
+            let habilidad = eleccionJugador.esquivaImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.ataqueImgPc
+            pintarHabilidadPc(eleccionPC, habilidadPc)
             let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
             saludJugador1.innerText = String(saludJugador)
             let parrafo = document.getElementById("msj")
@@ -510,10 +604,18 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             salud()
         }else{
                 if(parseInt(saludJugador1.innerText) >= 90){
+                    let habilidad = eleccionJugador.esquivaImg
+                    pintarHabilidadJugador(eleccionJugador, habilidad)
+                    let habilidadPc = eleccionPC.ataqueImgPc
+                    pintarHabilidadPc(eleccionPC, habilidadPc)
                     saludJugador1.innerText = "100"
                     let parrafo = document.getElementById("msj")
                     parrafo.innerText = `Mascota de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} con exito y restaura su salud.`
                 }else{
+                    let habilidad = eleccionJugador.esquivaImg
+                    pintarHabilidadJugador(eleccionJugador, habilidad)
+                    let habilidadPc = eleccionPC.ataqueImgPc
+                    pintarHabilidadPc(eleccionPC, habilidadPc)
                     let saludJugador = parseInt(saludJugador1.innerText) + 10
                     saludJugador1.innerText = String(saludJugador)
                     let parrafo = document.getElementById("msj")
@@ -524,10 +626,18 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             salud()
         }
     }else if(valorJugador == "esquiva" && valorEnemigo == "defensa"){
+        let habilidad = eleccionJugador.esquivaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
         parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
     }else if(valorJugador == "esquiva" && valorEnemigo == "esquiva"){
+        let habilidad = eleccionJugador.esquivaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.esquivaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
         parrafo.innerText = `ambos personajes usan la habilidad de esquivar.`
         // mensajes.appendChild(parrafo)

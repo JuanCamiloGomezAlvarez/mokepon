@@ -91,7 +91,8 @@ body{
 
 .canvas{
     margin-top: 20px;
-    border: 3px solid #38E54D ;
+    border: 3px solid #38E54D;
+    border-radius: 8px;
     width: 320px;
     height: 153px;
     background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20210306/pngtree-modern-versus-battle-contestant-fighters-or-teams-with-stage-light-effect-image_580417.jpg");
