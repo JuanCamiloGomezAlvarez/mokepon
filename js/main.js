@@ -32,6 +32,10 @@ const mapa = document.querySelector("#mapa")
 let lienzo = mapa.getContext("2d")
 let intervalo
 
+//estas variables se usan para contar la cantidad de veces que se oprime el boton de esquivar del jugador y la pc
+let contadorEsquivaJugador = 0
+let contadorEsquivaPc = 0
+
 // estas variables son para la funcion de combate y me permiten trabajar con el personaje seleccionado
 let eleccionJugador = ""
 let eleccionPC = ""
@@ -173,8 +177,11 @@ function habilidadesElegidas(mokeponElegido){
     let esquiva = mokeponElegido[2]
 
     habilidades.innerHTML = `<button id=${ataque.id} class="btn">${ataque.nombre}</button>
-                             <button id=${defensa.id} class="btn">${defensa.nombre}</button>
-                             <button id=${esquiva.id} class="btn">${esquiva.nombre}</button>`
+                            <button id=${defensa.id} class="btn">${defensa.nombre}</button>
+                            <button id=${esquiva.id} class="btn">${esquiva.nombre} </button>`
+    
+
+    
 }
 
 //seleccion de la mascota
@@ -204,6 +211,7 @@ function seleccionarMascotaJugador(){
         btnAgua2.addEventListener("click", ataqueAgua2)
         const btnAgua3 = document.querySelector("#btnAgua3")
         btnAgua3.addEventListener("click", ataqueAgua3)
+        
         
     }else if(capipepo.checked == true){
         eleccionJugador = mokeponesArray[1]
@@ -331,11 +339,25 @@ function ataqueFuego2(){
 }
 function ataqueFuego3(){
     //alert("Usaste la habilidad Esquivar")
-    lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "esquiva"
-    let valorEnemigo = ataqueEnemigo()
-    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-    return resultadoRonda
+    
+    contadorEsquivaJugador++
+    if(contadorEsquivaJugador >= 5 ){
+        Swal.fire({
+            title: "Ya no puedes esquivar mas",
+            icon: "info",       
+            color: "#FDFF00",
+            
+        })
+        btnFuego3.disabled
+        btnFuego3.style.opacity = 0.7 
+    }else{
+        lienzo.clearRect(95,50,120, 100)
+        let valorJugador = "esquiva"
+        let valorEnemigo = ataqueEnemigo()
+        let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+        return resultadoRonda
+    }
+    
 }
 //agua
 function ataqueAgua1(){
@@ -356,11 +378,23 @@ function ataqueAgua2(){
 }
 function ataqueAgua3(){
     //alert("Usaste la habilidad Esquivar")
-    lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "esquiva"
-    let valorEnemigo = ataqueEnemigo()
-    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-    return resultadoRonda
+    if(contadorEsquivaJugador >= 5 ){
+        Swal.fire({
+            title: "Ya no puedes esquivar mas",
+            icon: "info",       
+            color: "#FDFF00",
+            
+        })
+        btnAgua3.disabled
+        btnAgua3.style.opacity = 0.7 
+    }else{
+        lienzo.clearRect(95,50,120, 100)
+        let valorJugador = "esquiva"
+        let valorEnemigo = ataqueEnemigo()
+        let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+        contadorEsquivaJugador++
+        return resultadoRonda
+    }
 }
 //tierra
 function ataqueTierra1(){
@@ -381,11 +415,23 @@ function ataqueTierra2(){
 }
 function ataqueTierra3(){
     //alert("Usaste la habilidad esquivar")
-    lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "esquiva"
-    let valorEnemigo = ataqueEnemigo()
-    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-    return resultadoRonda
+    if(contadorEsquivaJugador >= 5 ){
+        Swal.fire({
+            title: "Ya no puedes esquivar mas",
+            icon: "info",       
+            color: "#FDFF00",
+            
+        })
+        btnTierra3.disabled
+        btnTierra3.style.opacity = 0.7 
+    }else{
+        lienzo.clearRect(95,50,120, 100)
+        let valorJugador = "esquiva"
+        let valorEnemigo = ataqueEnemigo()
+        let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+        contadorEsquivaJugador++
+        return resultadoRonda
+    }    
 }
 
 // esta es la funcion de ataque enemigo
@@ -397,7 +443,13 @@ function ataqueEnemigo(){
         return Math.floor(Math.random()*(max - min + 1) + min)
     }
 
-    ataquePC = ataqueAleatorio(1,3)
+    if(contadorEsquivaPc == 5){
+
+        ataquePC = ataqueAleatorio(1,2)
+    }else{
+        ataquePC = ataqueAleatorio(1,3)
+    }
+    
 
     if(mascotaPC.innerText == "Hipodoge"){
         if(ataquePC == 1){
@@ -405,6 +457,7 @@ function ataqueEnemigo(){
         }else if(ataquePC == 2){
             return "defensa"
         }else{
+            contadorEsquivaPc++ 
             return "esquiva"
         }
     }else if(mascotaPC.innerText == "Capipepo"){
@@ -414,6 +467,7 @@ function ataqueEnemigo(){
         }else if(ataquePC == 2){
             return "defensa"
         }else{
+            contadorEsquivaPc++
             return "esquiva"
         }
     }else if(mascotaPC.innerText == "Ratigueya"){
@@ -423,6 +477,7 @@ function ataqueEnemigo(){
         }else if(ataquePC == 2){
             return "defensa"
         }else{
+            contadorEsquivaPc++
             return "esquiva"
         }
     }else{
@@ -440,7 +495,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     let defensaPc = eleccionPC.defensa
     let esquivaJugador = eleccionJugador.esquiva
     let esquivaPc = eleccionPC.esquiva
-    let esquivaHabilidad = 0
+    let esquivaHabilidad 
     //let escudosUsados = 4
     let habilidadUsadaJugador = eleccionJugador.habilidades
     let habilidadUsadaPc = eleccionPC.habilidades
@@ -449,6 +504,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     function esquivarAleatorio(min, max){
         return Math.floor(Math.random()*(max - min + 1) + min)
     }
+
 
     if(valorJugador == "ataque" && valorEnemigo == "ataque"){
         let habilidad = eleccionJugador.ataqueImg
@@ -479,7 +535,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
-        esquivaHabilidad = esquivarAleatorio(1,2)
+        esquivaHabilidad = esquivarAleatorio(0,1)
         if(esquivaPc[esquivaHabilidad] == false){
             let habilidad = eleccionJugador.ataqueImg
             pintarHabilidadJugador(eleccionJugador, habilidad)
@@ -547,7 +603,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         // mensajes.appendChild(parrafo)
         
     }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
-        esquivaHabilidad = esquivarAleatorio(1,2)
+        esquivaHabilidad = esquivarAleatorio(0,1)
         if(esquivaJugador[esquivaHabilidad] == false){
             let habilidad = eleccionJugador.esquivaImg
             pintarHabilidadJugador(eleccionJugador, habilidad)
@@ -649,3 +705,18 @@ function salud(){
         btnReiniciar.addEventListener("click", () =>{location.reload()})
     }
 }
+
+function unirseAlJuego(){
+    fetch("http://localhost:8080/unirse")
+        .then(function(res){
+            console.log(res)
+            if(res.ok){
+                res.text()
+                    .then(function (respuesta){
+                        console.log(respuesta)
+                    })
+            }
+        })
+}
+
+unirseAlJuego()
