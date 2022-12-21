@@ -101,51 +101,13 @@ const hipodoge = document.querySelector("#Hipodoge")
 const capipepo = document.querySelector("#Capipepo")
 const ratigueya = document.querySelector("#Ratigueya")
 
-
-// este objeto contiene a todas las macotas
-// const mascotas = {
-//     "Hipodoge":{
-//                 "salud": 100,
-//                 "ataque": 30,
-//                 "defensa":20,
-//                 "esquiva":{
-//                             1: false,
-//                             2: true
-//                         },
-//                 },
-//     "Capipepo":{
-//                 "salud": 100,
-//                 "ataque": 25,
-//                 "defensa":25,
-//                 "esquiva":{
-//                             1: false,
-//                             2: true
-//                         },
-//                 },
-//     "Ratigueya":{
-//                 "salud": 100,
-//                 "ataque": 20,
-//                 "defensa":30,
-//                 "esquiva":{
-//                             1: false,
-//                             2: true
-//                         },
-//                 }
-
-// }
-
 //trabajando con canvas
-
 function pintarPersonajeJugador(personaje){
-
-    personaje.x = personaje.x 
-    personaje.y = personaje.y
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
 }
 
 function pintarPersonajeEnemigo(personaje){
-
     personaje.x = personaje.x + 185
     personaje.y = personaje.y
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
@@ -153,21 +115,16 @@ function pintarPersonajeEnemigo(personaje){
 }
 
 function pintarHabilidadJugador(personaje, habilidad){
-    //lienzo.clearRect(95,50,100, 100)
     lienzo.drawImage(habilidad, personaje.xAtaqueJugador, personaje.yAtaqueJugador, personaje.altoAtaqueJugador, personaje.anchoAtaqueJugador)
 }
 
 function pintarHabilidadPc(personaje, habilidad){
-    
     lienzo.drawImage(habilidad, personaje.xAtaquePc, personaje.yAtaquePc, personaje.altoAtaquePc, personaje.anchoAtaquePc)
 }
 
 //intervalo = setInterval(pintarPersonajeJugador, 50 )
-
-
 // window.addEventListener("keydown", botonOprimido)
 // window.addEventListener("keyup", detenerMovimiento)
-
 // function moverDerecha(){
 //     capipepoObj.velocidadX =  5
 //     // pintarPersonaje()
@@ -484,7 +441,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     let esquivaJugador = eleccionJugador.esquiva
     let esquivaPc = eleccionPC.esquiva
     let esquivaHabilidad = 0
-    let escudosUsados = 4
+    //let escudosUsados = 4
     let habilidadUsadaJugador = eleccionJugador.habilidades
     let habilidadUsadaPc = eleccionPC.habilidades
 
