@@ -43,6 +43,9 @@ let eleccionPC = ""
 //variable para la impresion de los mokepones
 let pokemonesParaElegir
 
+// esta variable es el Id del jugador 
+let jugadorId = null
+
 //clase mokepon
 
 class Mokepon{
@@ -186,8 +189,9 @@ function habilidadesElegidas(mokeponElegido){
 
 //seleccion de la mascota
 function seleccionarMascotaJugador(){
+    
     if(hipodoge.checked == true){
-
+        
         eleccionJugador = mokeponesArray[0]
         
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
@@ -214,6 +218,7 @@ function seleccionarMascotaJugador(){
         
         
     }else if(capipepo.checked == true){
+       
         eleccionJugador = mokeponesArray[1]
         
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
@@ -238,6 +243,7 @@ function seleccionarMascotaJugador(){
         btnTierra3.addEventListener("click", ataqueTierra3)
 
     }else if(ratigueya.checked == true){
+        
         eleccionJugador = mokeponesArray[2]
         
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
@@ -269,6 +275,8 @@ function seleccionarMascotaJugador(){
         })
     }
     
+    seleccionarMokeponBackEnd(eleccionJugador)
+
 }
 
 // funcion de eleccion de la PC
@@ -709,14 +717,29 @@ function salud(){
 function unirseAlJuego(){
     fetch("http://localhost:8080/unirse")
         .then(function(res){
-            console.log(res)
+            console.log("esta es la respuesta del fetch", res)
             if(res.ok){
                 res.text()
                     .then(function (respuesta){
-                        console.log(respuesta)
+                        console.log("este es el id", respuesta)
+                        jugadorId = respuesta
                     })
             }
         })
 }
+
+function seleccionarMokeponBackEnd(eleccionJugador){
+   
+    fetch(`http://localhost:8080/mokepon/${jugadorId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokepon: eleccionJugador.nombre
+        })
+    })
+}
+
 
 unirseAlJuego()
