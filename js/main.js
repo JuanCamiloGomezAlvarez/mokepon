@@ -110,8 +110,32 @@ const ratigueya = document.querySelector("#Ratigueya")
 
 //trabajando con canvas
 function pintarPersonajeJugador(personaje){
+    let x = personaje.x
+    let y = personaje.y
+    enviarPosicionJugador(x,y)
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
+}
+
+function enviarPosicionJugador(x,y){
+    fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
+        method: "post",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+        .then(function(res){
+            if(res.ok){
+                res.json()
+                    .then(function({enemigos}){
+                        console.log(enemigos)
+                    })
+            }
+        })
 }
 
 function pintarPersonajeEnemigo(personaje){
