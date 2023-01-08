@@ -1,9 +1,19 @@
+//variables de los botones del menu de inicio
+const menuInicio = document.querySelector("#menuInicio")
+const botonPvE = document.querySelector("#botonPvE")
+botonPvE.addEventListener("click", seccionPvE)
+const botonPvP = document.querySelector("#botonPvP")
+botonPvP.addEventListener("click", seccionPvP)
+const botonInstructions = document.querySelector("#botonInstructions")
+
 // variable de seccion de seleccionar mascota
 const seleccionarMascota = document.querySelector("#seleccionarMascota")
 
 //Selector del boton de inicio del juego
 const botonMascota = document.querySelector("#botonMascota")
 botonMascota.addEventListener("click", seleccionarMascotaJugador)
+const botonMascotaPvP = document.querySelector("#botonMascotaPvP")
+botonMascotaPvP.addEventListener("click", seleccionarCombatePvP)
 
 //variable de la seccion de seleccion de ataques
 const seleccionarAtaque = document.querySelector("#seleccionarAtaque")
@@ -45,6 +55,7 @@ let pokemonesParaElegir
 
 // esta variable es el Id del jugador 
 let jugadorId = null
+let enemigoId = null
 
 //clase mokepon
 
@@ -107,6 +118,20 @@ mokeponesArray.forEach(mokepon => {
 const hipodoge = document.querySelector("#Hipodoge")
 const capipepo = document.querySelector("#Capipepo")
 const ratigueya = document.querySelector("#Ratigueya")
+
+//funcion del menu de inicio
+function seccionPvE(){
+    menuInicio.classList.add("inactive")
+    seleccionarMascota.classList.remove("inactive")
+    botonMascotaPvP.classList.add("inactive")
+}
+
+function seccionPvP(){
+    menuInicio.classList.add("inactive")
+    seleccionarMascota.classList.remove("inactive")
+    botonMascota.classList.add("inactive")
+    unirseAlJuego()
+}
 
 //trabajando con canvas
 function pintarPersonajeJugador(personaje){
@@ -211,7 +236,7 @@ function habilidadesElegidas(mokeponElegido){
     
 }
 
-//seleccion de la mascota
+//seleccion de la mascota e inicio del juego en PvE
 function seleccionarMascotaJugador(){
     
     if(hipodoge.checked == true){
@@ -298,9 +323,97 @@ function seleccionarMascotaJugador(){
             color: "#FDFF00"
         })
     }
+
+}
+
+//seleccion de la mascota e inicio del juego en PvP
+function seleccionarCombatePvP(){
+    if(hipodoge.checked == true){
+        
+        eleccionJugador = mokeponesArray[0]
+        
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        
+        saludJugador1.innerText = mokeponesArray[0].salud
+
+        pintarPersonajeJugador(eleccionJugador)
+
+        let mokeponElegido = eleccionJugador.habilidades
+        habilidadesElegidas(mokeponElegido)
+        
+        //seleccionarMascotaPC()
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
+
+        //botones de ataque con agua
+        const btnAgua1 = document.querySelector("#btnAgua1")
+        btnAgua1.addEventListener("click", ataqueAgua1)
+        const btnAgua2 = document.querySelector("#btnAgua2")
+        btnAgua2.addEventListener("click", ataqueAgua2)
+        const btnAgua3 = document.querySelector("#btnAgua3")
+        btnAgua3.addEventListener("click", ataqueAgua3)
+        
+        
+    }else if(capipepo.checked == true){
+       
+        eleccionJugador = mokeponesArray[1]
+        
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        saludJugador1.innerText = mokeponesArray[1].salud
+
+        pintarPersonajeJugador(eleccionJugador)
+
+        let mokeponElegido = eleccionJugador.habilidades
+        habilidadesElegidas(mokeponElegido)
+        
+        //seleccionarMascotaPC()
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
+
+        //botones de ataque con tierra
+        const btnTierra1 = document.querySelector("#btnTierra1")
+        btnTierra1.addEventListener("click", ataqueTierra1)
+        const btnTierra2 = document.querySelector("#btnTierra2")
+        btnTierra2.addEventListener("click", ataqueTierra2)
+        const btnTierra3 = document.querySelector("#btnTierra3")
+        btnTierra3.addEventListener("click", ataqueTierra3)
+
+    }else if(ratigueya.checked == true){
+        
+        eleccionJugador = mokeponesArray[2]
+        
+        mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
+        saludJugador1.innerText = mokeponesArray[2].salud
+
+        pintarPersonajeJugador(eleccionJugador)
+
+        let mokeponElegido = eleccionJugador.habilidades
+        habilidadesElegidas(mokeponElegido)
+        
+        //seleccionarMascotaPC()
+
+        seleccionarAtaque.classList.remove("inactive")
+        seleccionarMascota.classList.add("inactive")
+        sectionMapa.classList.remove("inactive")
+        //botones de ataque con fuego
+
+        const btnFuego1 = document.querySelector("#btnFuego1")
+        btnFuego1.addEventListener("click", ataqueFuego1PvP)       
+        const btnFuego2 = document.querySelector("#btnFuego2")
+        btnFuego2.addEventListener("click", ataqueFuego2)
+        const btnFuego3 = document.querySelector("#btnFuego3")
+        btnFuego3.addEventListener("click", ataqueFuego3)
+    }else{
+        Swal.fire({
+            icon: "warning",
+            text: "aun no seleccionas una mascota",
+            color: "#FDFF00"
+        })
+    }
     
     seleccionarMokeponBackEnd(eleccionJugador)
-
 }
 
 // funcion de eleccion de la PC
@@ -350,8 +463,22 @@ function seleccionarMascotaPC(){
     }
 }
 
+//post al servidor con el ataque del jugador
+function enviarAtaque(ataque){
+    fetch(`http://localhost:8080/mokepon/${jugadorId}/ataque`, {
+        method: "post",
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            ataque
+        })
+
+    })
+}
+
 //Funciones de habilidades de los personajes
-//fuego
+//fuego para el PvE
 function ataqueFuego1(){
     //lert("hiciste un ataque con Bomba de fuego")
     lienzo.clearRect(95,50,120, 100)
@@ -359,7 +486,7 @@ function ataqueFuego1(){
     let valorEnemigo = ataqueEnemigo()
     let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
     return resultadoRonda
-} 
+}
 function ataqueFuego2(){
     //alert("Usaste la habilidad Escudo de fuego")
     lienzo.clearRect(95,50,120, 100)
@@ -391,6 +518,15 @@ function ataqueFuego3(){
     }
     
 }
+//fuego para el PvP
+function ataqueFuego1PvP(){
+    lienzo.clearRect(95,50,120, 100)
+    let valorJugador = "ataque"
+    enviarAtaque(valorJugador)
+    let valorEnemigo = null
+    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
+    return resultadoRonda
+} 
 //agua
 function ataqueAgua1(){
     //alert("Atacaste con Chorro de agua")
@@ -692,6 +828,8 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
     }
 }
 
+
+
 //funcion de la salud de los personajes
 function salud(){
 
@@ -766,4 +904,3 @@ function seleccionarMokeponBackEnd(eleccionJugador){
 }
 
 
-unirseAlJuego()

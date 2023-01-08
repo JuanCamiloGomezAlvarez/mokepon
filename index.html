@@ -11,7 +11,14 @@
 <body>
     <h1 class="title">MOKEPON!</h1>
 
-    <section id="seleccionarMascota" class="section-mascotas">
+    <section id="menuInicio" class="section-inicio">
+        <h2>Menu de inicio</h2>
+        <button id="botonPvE" class="btn-seleccionar">PvE</button>
+        <button id="botonPvP" class="btn-seleccionar">PvP</button>
+        <button id="botonInstructions" class="btn-seleccionar">Instructions</button>
+    </section>
+
+    <section id="seleccionarMascota" class="section-mascotas inactive">
         <h2>Elige tu mascota</h2>
         <div class="card-container" id="contenedor-mokepones">
             <!-- <label class="cards-mokepon" id="hipo" for="hipodoge">
@@ -32,6 +39,8 @@
         </div>
         
         <button id="botonMascota" class="btn-seleccionar">Seleccionar</button>
+        <button id="botonMascotaPvP" class="btn-seleccionar">Combate PvP</button>
+
     </section>
 
     <section id="sectionMapa" class="inactive">

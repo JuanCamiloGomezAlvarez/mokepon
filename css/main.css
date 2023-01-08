@@ -27,6 +27,12 @@ body{
     margin-top: 20px ;
 }
 
+.section-inicio{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px ;
+}
+
 .card-container{
     margin: 20px 0;
     display: flex;
@@ -82,6 +88,7 @@ body{
     justify-self: center;
     align-self: center;
     font-size: 12px;
+    margin-top: 20px;
 }
 
 .btn-seleccionar:hover{
