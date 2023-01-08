@@ -52,6 +52,7 @@ let eleccionPC = ""
 
 //variable para la impresion de los mokepones
 let pokemonesParaElegir
+let mokeponesEnemigos = []
 
 // esta variable es el Id del jugador 
 let jugadorId = null
@@ -60,7 +61,8 @@ let enemigoId = null
 //clase mokepon
 
 class Mokepon{
-    constructor(nombre, img, salud, ataque, defensa, esquiva, habilidades){
+    constructor(nombre, img, salud, ataque, defensa, esquiva, habilidades, id = null){
+        this.id = id
         this.nombre = nombre
         this.img = img
         this.salud = salud
@@ -138,9 +140,11 @@ function pintarPersonajeJugador(personaje){
     let x = personaje.x
     let y = personaje.y
     enviarPosicionJugador(x,y)
-    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+    //lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
 }
+
+let mokeponEnemigo = null
 
 function enviarPosicionJugador(x,y){
     fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
@@ -157,17 +161,59 @@ function enviarPosicionJugador(x,y){
             if(res.ok){
                 res.json()
                     .then(function({enemigos}){
-                        console.log(enemigos)
+                        mokeponesEnemigos = enemigos.map(function(enemigo){
+                            
+                            const mokeponNombre = enemigo.mokepon.nombre || ""
+                            if (mokeponNombre === "Hipodoge") {
+                                mokeponEnemigo = new Mokepon("Hipodoge", "./img/mokepons_mokepon_hipodoge_attack.png", 100, 30, 20, [false, true], [{nombre:"Chorro de agua",id:"btnAgua1", img:["./img/chorro-agua.png","./img/chorro-agua-invertida.png"]},{nombre:"Escudo de agua", id:"btnAgua2",img:"./img/escudo-agua.png"},{nombre:"Esquivar", id:"btnAgua3",img:"./img/esquivar.png"}], enemigo.id)
+                            } else if (mokeponNombre === "Capipepo") {
+                                mokeponEnemigo = new Mokepon("Capipepo", "./img/mokepons_mokepon_capipepo_attack.png", 100, 25, 25, [false, true], [{nombre:"Puños de piedra",id:"btnTierra1",img:["./img/puños-piedra.png","./img/puños-piedra-invertida.png"]},{nombre:"Escudo de roca", id:"btnTierra2", img:"./img/escudo-piedra.png"},{nombre:"Esquivar", id:"btnTierra3", img:"./img/esquivar.png"}], enemigo.id)
+                            } else if (mokeponNombre === "Ratigueya") {
+                                mokeponEnemigo = new Mokepon("Ratigueya", "./img/mokepons_mokepon_ratigueya_attack.png", 100, 20, 30, [false, true], [{nombre:"Bomba de fuego",id:"btnFuego1", img:["./img/bomba-fuego.png","./img/bomba-fuego-invertida.png"]},{nombre:"Escudo de fuego", id:"btnFuego2", img:"./img/escudo-fuego.png"},{nombre:"Esquivar", id:"btnFuego3", img:"./img/esquivar.png"}], enemigo.id)
+                            }
+
+                            mokeponEnemigo.x = enemigo.x + 185
+                            mokeponEnemigo.y = enemigo.y
+                            console.log("mokepon enemigo", mokeponEnemigo)
+                            return mokeponEnemigo
+                        })
+                        
+                        // let enemigo = enemigos[enemigos.length - 1]
+                        // console.log("este es el  ultimo objeto del array  ",enemigo)
+                        // enemigoId = enemigo
+                        // return enemigoId
                     })
             }
         })
 }
+
+// function enviarPosicionEnemigo(x,y){
+//     fetch(`http://localhost:8080/mokepon/${enemigoId}/posicion`, {
+//         method: "post",
+//         headers:{
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//             x,
+//             y
+//         })
+//     })
+        
+// }
 
 function pintarPersonajeEnemigo(personaje){
     personaje.x = personaje.x + 185
     personaje.y = personaje.y
     lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
+}
+
+function pintarPersonajeEnemigoPvP(personaje){
+    personaje.x = personaje.x 
+    personaje.y = personaje.y
+    //lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+    lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
+    //clearInterval(intervalo)
 }
 
 function pintarHabilidadJugador(personaje, habilidad){
@@ -179,48 +225,6 @@ function pintarHabilidadPc(personaje, habilidad){
 }
 
 //intervalo = setInterval(pintarPersonajeJugador, 50 )
-// window.addEventListener("keydown", botonOprimido)
-// window.addEventListener("keyup", detenerMovimiento)
-// function moverDerecha(){
-//     capipepoObj.velocidadX =  5
-//     // pintarPersonaje()
-// }
-// function moverAbajo(){
-//     capipepoObj.velocidadY =  5
-//     // pintarPersonaje()
-// }
-// function moverIzquierda(){
-//     capipepoObj.velocidadX =  - 5
-//     // pintarPersonaje()
-// }
-// function moverArriba(){
-//     capipepoObj.velocidadY =  - 5
-//     // pintarPersonaje()
-// }
-// function detenerMovimiento(){
-//     capipepoObj.velocidadX = 0
-//     capipepoObj.velocidadY = 0
-// }
-
-
-// function botonOprimido(event){
-//     switch (event.key) {
-//         case "ArrowUp":
-//             moverArriba()
-//             break;
-//         case "ArrowDown":
-//             moverAbajo()
-//             break;
-//         case "ArrowRight":
-//             moverDerecha()
-//             break;
-//         case "ArrowLeft":
-//             moverIzquierda()            
-//             break;
-//         default:
-//             break;
-//     }
-// }
 
 // impresion de los botenes de las habilidades
 function habilidadesElegidas(mokeponElegido){
@@ -328,6 +332,7 @@ function seleccionarMascotaJugador(){
 
 //seleccion de la mascota e inicio del juego en PvP
 function seleccionarCombatePvP(){
+ 
     if(hipodoge.checked == true){
         
         eleccionJugador = mokeponesArray[0]
@@ -335,8 +340,6 @@ function seleccionarCombatePvP(){
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
         
         saludJugador1.innerText = mokeponesArray[0].salud
-
-        pintarPersonajeJugador(eleccionJugador)
 
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
@@ -362,8 +365,6 @@ function seleccionarCombatePvP(){
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
         saludJugador1.innerText = mokeponesArray[1].salud
 
-        pintarPersonajeJugador(eleccionJugador)
-
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
         
@@ -386,8 +387,6 @@ function seleccionarCombatePvP(){
         
         mascotaSeleccionada.innerHTML = `<strong>${eleccionJugador.nombre}</strong>`
         saludJugador1.innerText = mokeponesArray[2].salud
-
-        pintarPersonajeJugador(eleccionJugador)
 
         let mokeponElegido = eleccionJugador.habilidades
         habilidadesElegidas(mokeponElegido)
@@ -412,10 +411,17 @@ function seleccionarCombatePvP(){
             color: "#FDFF00"
         })
     }
+
     
+    intervalo =  setInterval(pintarPersonajes, 3000)
     seleccionarMokeponBackEnd(eleccionJugador)
 }
 
+function pintarPersonajes(){
+    pintarPersonajeJugador(eleccionJugador)
+    pintarPersonajeEnemigoPvP(mokeponEnemigo)
+    
+}
 // funcion de eleccion de la PC
 function seleccionarMascotaPC(){
 
@@ -827,9 +833,6 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         mensajes.innerText = `<p>algo salio mal.</p>`
     }
 }
-
-
-
 //funcion de la salud de los personajes
 function salud(){
 
@@ -879,7 +882,7 @@ function salud(){
 function unirseAlJuego(){
     fetch("http://localhost:8080/unirse")
         .then(function(res){
-            console.log("esta es la respuesta del fetch", res)
+            console.log("esta es la respues del fetch unirse: ", typeof(res) )
             if(res.ok){
                 res.text()
                     .then(function (respuesta){
