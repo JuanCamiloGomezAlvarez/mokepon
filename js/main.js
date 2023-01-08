@@ -57,6 +57,7 @@ let mokeponesEnemigos = []
 // esta variable es el Id del jugador 
 let jugadorId = null
 let enemigoId = null
+let mokeponEnemigo = null
 
 //clase mokepon
 
@@ -135,16 +136,6 @@ function seccionPvP(){
     unirseAlJuego()
 }
 
-//trabajando con canvas
-function pintarPersonajeJugador(personaje){
-    let x = personaje.x
-    let y = personaje.y
-    enviarPosicionJugador(x,y)
-    //lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
-    lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
-}
-
-let mokeponEnemigo = null
 
 function enviarPosicionJugador(x,y){
     fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
@@ -187,24 +178,12 @@ function enviarPosicionJugador(x,y){
         })
 }
 
-// function enviarPosicionEnemigo(x,y){
-//     fetch(`http://localhost:8080/mokepon/${enemigoId}/posicion`, {
-//         method: "post",
-//         headers:{
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify({
-//             x,
-//             y
-//         })
-//     })
-        
-// }
-
-function pintarPersonajeEnemigo(personaje){
-    personaje.x = personaje.x + 185
-    personaje.y = personaje.y
-    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+//trabajando con canvas
+function pintarPersonajeJugador(personaje){
+    let x = personaje.x
+    let y = personaje.y
+    enviarPosicionJugador(x,y)
+    //lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
 }
 
@@ -215,6 +194,19 @@ function pintarPersonajeEnemigoPvP(personaje){
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
     //clearInterval(intervalo)
 }
+
+function pintarSaludOponente(personaje){
+    mascotaPC.innerHTML = `<strong>${personaje.nombre}</strong>`
+    saludEnemigo1.innerText = personaje.salud
+}
+
+function pintarPersonajeEnemigo(personaje){
+    personaje.x = personaje.x + 185
+    personaje.y = personaje.y
+    lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
+    lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
+}
+
 
 function pintarHabilidadJugador(personaje, habilidad){
     lienzo.drawImage(habilidad, personaje.xAtaqueJugador, personaje.yAtaqueJugador, personaje.altoAtaqueJugador, personaje.anchoAtaqueJugador)
@@ -412,7 +404,6 @@ function seleccionarCombatePvP(){
         })
     }
 
-    
     intervalo =  setInterval(pintarPersonajes, 3000)
     seleccionarMokeponBackEnd(eleccionJugador)
 }
@@ -420,7 +411,7 @@ function seleccionarCombatePvP(){
 function pintarPersonajes(){
     pintarPersonajeJugador(eleccionJugador)
     pintarPersonajeEnemigoPvP(mokeponEnemigo)
-    
+    pintarSaludOponente(mokeponEnemigo)
 }
 // funcion de eleccion de la PC
 function seleccionarMascotaPC(){
