@@ -6,6 +6,12 @@ const botonPvP = document.querySelector("#botonPvP")
 botonPvP.addEventListener("click", seccionPvP)
 const botonInstructions = document.querySelector("#botonInstructions")
 
+
+//variable del boton de evaluar Resusltado
+const evaluarResultado = document.querySelector("#evaluarResultado")
+evaluarResultado.addEventListener("click", evaluarResultadoPvP)
+
+
 // variable de seccion de seleccionar mascota
 const seleccionarMascota = document.querySelector("#seleccionarMascota")
 
@@ -41,6 +47,7 @@ const sectionMapa = document.querySelector("#sectionMapa")
 const mapa = document.querySelector("#mapa")
 let lienzo = mapa.getContext("2d")
 let intervalo
+let intervalo2
 
 //estas variables se usan para contar la cantidad de veces que se oprime el boton de esquivar del jugador y la pc
 let contadorEsquivaJugador = 0
@@ -53,11 +60,14 @@ let eleccionPC = ""
 //variable para la impresion de los mokepones
 let pokemonesParaElegir
 let mokeponesEnemigos = []
+let ataquesEnemigosPvP = []
 
 // esta variable es el Id del jugador 
 let jugadorId = null
 let enemigoId = null
 let mokeponEnemigo = null
+let ataqueEnemigoPvP = null
+let ataqueJugadorPvP = null
 
 //clase mokepon
 
@@ -136,6 +146,10 @@ function seccionPvP(){
     unirseAlJuego()
 }
 
+function evaluarResultadoPvP(){
+    
+}
+
 
 function enviarPosicionJugador(x,y){
     fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
@@ -192,7 +206,7 @@ function pintarPersonajeEnemigoPvP(personaje){
     personaje.y = personaje.y
     //lienzo.clearRect(0, 0, mapa.clientWidth, mapa.height)
     lienzo.drawImage( personaje.mapaFoto, personaje.x, personaje.y, personaje.alto, personaje.ancho)
-    //clearInterval(intervalo)
+
 }
 
 function pintarSaludOponente(personaje){
@@ -393,9 +407,9 @@ function seleccionarCombatePvP(){
         const btnFuego1 = document.querySelector("#btnFuego1")
         btnFuego1.addEventListener("click", ataqueFuego1PvP)       
         const btnFuego2 = document.querySelector("#btnFuego2")
-        btnFuego2.addEventListener("click", ataqueFuego2)
+        btnFuego2.addEventListener("click", ataqueFuego2PvP)
         const btnFuego3 = document.querySelector("#btnFuego3")
-        btnFuego3.addEventListener("click", ataqueFuego3)
+        btnFuego3.addEventListener("click", ataqueFuego3PvP)
     }else{
         Swal.fire({
             icon: "warning",
@@ -404,14 +418,16 @@ function seleccionarCombatePvP(){
         })
     }
 
-    intervalo =  setInterval(pintarPersonajes, 3000)
+    intervalo =  setInterval(pintarPersonajesPvP, 1000)
     seleccionarMokeponBackEnd(eleccionJugador)
 }
 
-function pintarPersonajes(){
+function pintarPersonajesPvP(){
     pintarPersonajeJugador(eleccionJugador)
     pintarPersonajeEnemigoPvP(mokeponEnemigo)
     pintarSaludOponente(mokeponEnemigo)
+    enviarAtaque(ataqueJugadorPvP)
+    resolviendoAtaques()
 }
 // funcion de eleccion de la PC
 function seleccionarMascotaPC(){
@@ -472,8 +488,43 @@ function enviarAtaque(ataque){
         })
 
     })
+        .then(function(res){
+            if(res.ok){
+                res.json()
+                    .then(function({ataqueEnemigo}){
+                        console.log("ataques enemigos", ataqueEnemigo)
+                        ataquesEnemigosPvP = ataqueEnemigo?.map(function(habilidad){
+
+                            const habilidadUsada = habilidad.ataque || ""
+
+                            //console.log("habilidad usada: ", habilidadUsada)
+                            
+                            if(habilidadUsada === "ataque"){
+                                ataqueEnemigoPvP = "ataque"
+                            }else if(habilidadUsada === "defensa"){
+                                ataqueEnemigoPvP = "defensa"
+                            }else if(habilidadUsada === "esquiva"){
+                                ataqueEnemigoPvP = "esquiva"
+                            }
+                            //console.log("este es el resultado", ataqueEnemigoPvP)
+                            return ataqueEnemigoPvP
+                        })
+                    })
+            }
+        })
 }
 
+//esta funcion se creo para imprimir en pantalla los dos ataques
+function resolviendoAtaques(){
+    console.log("resolviendo ataques")
+    let valorJugador = ataqueJugadorPvP
+    let valorEnemigo = ataqueEnemigoPvP
+    if(valorJugador !== null && valorEnemigo !== null){
+        combate(valorJugador, valorEnemigo, eleccionJugador, mokeponEnemigo)
+        clearInterval(intervalo)       
+    }
+    
+}
 //Funciones de habilidades de los personajes
 //fuego para el PvE
 function ataqueFuego1(){
@@ -515,14 +566,51 @@ function ataqueFuego3(){
     }
     
 }
-//fuego para el PvP
+//habilidades de fuego para el PvP
 function ataqueFuego1PvP(){
+    //clearInterval(intervalo)
     lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "ataque"
+    ataqueJugadorPvP = "ataque"
+    //enviarAtaque(valorJugador)
+    //let valorEnemigo = ataqueEnemigoPvP
+    // intervalo2 = setInterval(resolviendoAtaques(valorJugador), 3000)
+    if(ataqueJugadorPvP !== null && valorEnemigo !== null){
+        //console.log("valor enemigo : ", valorEnemigo)
+        combate(valorJugador, valorEnemigo, eleccionJugador, mokeponEnemigo)
+        //let resultadoRonda  
+        //return intervalo2 
+    }
+    
+} 
+function ataqueFuego2PvP(){
+    clearInterval(intervalo)
+    lienzo.clearRect(95,50,120, 100)
+    let valorJugador = "defensa"
     enviarAtaque(valorJugador)
-    let valorEnemigo = null
-    let resultadoRonda = combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC)
-    return resultadoRonda
+    let valorEnemigo = ataqueEnemigoPvP
+    
+    if(valorJugador !== null && valorEnemigo !== null){
+        //console.log("valor enemigo : ", valorEnemigo)
+        intervalo2 = setInterval(resolviendoAtaques(valorJugador, valorEnemigo), 3000)
+        //let resultadoRonda  
+        return intervalo2 
+    }
+    
+} 
+function ataqueFuego3PvP(){
+    clearInterval(intervalo)
+    lienzo.clearRect(95,50,120, 100)
+    let valorJugador = "esquiva"
+    enviarAtaque(valorJugador)
+    let valorEnemigo = ataqueEnemigoPvP
+    
+    if(valorJugador !== null && valorEnemigo !== null){
+        //console.log("valor enemigo : ", valorEnemigo)
+        intervalo2 = setInterval(resolviendoAtaques(valorJugador, valorEnemigo), 3000)
+        //let resultadoRonda  
+        return intervalo2 
+    }
+    
 } 
 //agua
 function ataqueAgua1(){
