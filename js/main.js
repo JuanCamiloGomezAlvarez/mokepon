@@ -9,7 +9,7 @@ const botonInstructions = document.querySelector("#botonInstructions")
 
 //variable del boton de evaluar Resusltado
 const evaluarResultado = document.querySelector("#evaluarResultado")
-evaluarResultado.addEventListener("click", evaluarResultadoPvP)
+evaluarResultado.addEventListener("click", siguienteTurnoPvP)
 
 
 // variable de seccion de seleccionar mascota
@@ -146,8 +146,14 @@ function seccionPvP(){
     unirseAlJuego()
 }
 
-function evaluarResultadoPvP(){
-    
+function siguienteTurnoPvP(){
+    ataqueEnemigoPvP = null
+    ataqueJugadorPvP = null
+    ataquesEnemigosPvP = []
+    intervalo2 =  setInterval(pintarPersonajesPvP2, 1000)
+    lienzo.clearRect(95,50,120, 100)
+    habilidades.classList.remove("inactive")
+    evaluarResultado.classList.add("inactive")
 }
 
 
@@ -182,11 +188,6 @@ function enviarPosicionJugador(x,y){
                             console.log("mokepon enemigo", mokeponEnemigo)
                             return mokeponEnemigo
                         })
-                        
-                        // let enemigo = enemigos[enemigos.length - 1]
-                        // console.log("este es el  ultimo objeto del array  ",enemigo)
-                        // enemigoId = enemigo
-                        // return enemigoId
                     })
             }
         })
@@ -229,8 +230,6 @@ function pintarHabilidadJugador(personaje, habilidad){
 function pintarHabilidadPc(personaje, habilidad){
     lienzo.drawImage(habilidad, personaje.xAtaquePc, personaje.yAtaquePc, personaje.altoAtaquePc, personaje.anchoAtaquePc)
 }
-
-//intervalo = setInterval(pintarPersonajeJugador, 50 )
 
 // impresion de los botenes de las habilidades
 function habilidadesElegidas(mokeponElegido){
@@ -357,11 +356,11 @@ function seleccionarCombatePvP(){
 
         //botones de ataque con agua
         const btnAgua1 = document.querySelector("#btnAgua1")
-        btnAgua1.addEventListener("click", ataqueAgua1)
+        btnAgua1.addEventListener("click", ataqueAgua1PvP)
         const btnAgua2 = document.querySelector("#btnAgua2")
-        btnAgua2.addEventListener("click", ataqueAgua2)
+        btnAgua2.addEventListener("click", ataqueAgua2PvP)
         const btnAgua3 = document.querySelector("#btnAgua3")
-        btnAgua3.addEventListener("click", ataqueAgua3)
+        btnAgua3.addEventListener("click", ataqueAgua3PvP)
         
         
     }else if(capipepo.checked == true){
@@ -381,11 +380,11 @@ function seleccionarCombatePvP(){
 
         //botones de ataque con tierra
         const btnTierra1 = document.querySelector("#btnTierra1")
-        btnTierra1.addEventListener("click", ataqueTierra1)
+        btnTierra1.addEventListener("click", ataqueTierra1PvP)
         const btnTierra2 = document.querySelector("#btnTierra2")
-        btnTierra2.addEventListener("click", ataqueTierra2)
+        btnTierra2.addEventListener("click", ataqueTierra2PvP)
         const btnTierra3 = document.querySelector("#btnTierra3")
-        btnTierra3.addEventListener("click", ataqueTierra3)
+        btnTierra3.addEventListener("click", ataqueTierra3PvP)
 
     }else if(ratigueya.checked == true){
         
@@ -422,12 +421,19 @@ function seleccionarCombatePvP(){
     seleccionarMokeponBackEnd(eleccionJugador)
 }
 
+// estas dos funciones me permiten generar el bucle que trae los datos del backend constantmente
 function pintarPersonajesPvP(){
     pintarPersonajeJugador(eleccionJugador)
     pintarPersonajeEnemigoPvP(mokeponEnemigo)
     pintarSaludOponente(mokeponEnemigo)
     enviarAtaque(ataqueJugadorPvP)
     resolviendoAtaques()
+}
+
+function pintarPersonajesPvP2(){
+    enviarAtaque(ataqueJugadorPvP)
+    resolviendoAtaques()
+    
 }
 // funcion de eleccion de la PC
 function seleccionarMascotaPC(){
@@ -516,12 +522,17 @@ function enviarAtaque(ataque){
 
 //esta funcion se creo para imprimir en pantalla los dos ataques
 function resolviendoAtaques(){
-    console.log("resolviendo ataques")
+    //console.log("resolviendo ataques")
     let valorJugador = ataqueJugadorPvP
     let valorEnemigo = ataqueEnemigoPvP
+   
     if(valorJugador !== null && valorEnemigo !== null){
-        combate(valorJugador, valorEnemigo, eleccionJugador, mokeponEnemigo)
-        clearInterval(intervalo)       
+        combatePvP(valorJugador, valorEnemigo, eleccionJugador, mokeponEnemigo)
+        habilidades.classList.add("inactive")
+        evaluarResultado.classList.remove("inactive") 
+        clearInterval(intervalo)
+        clearInterval(intervalo2)
+              
     }
     
 }
@@ -568,49 +579,13 @@ function ataqueFuego3(){
 }
 //habilidades de fuego para el PvP
 function ataqueFuego1PvP(){
-    //clearInterval(intervalo)
-    lienzo.clearRect(95,50,120, 100)
     ataqueJugadorPvP = "ataque"
-    //enviarAtaque(valorJugador)
-    //let valorEnemigo = ataqueEnemigoPvP
-    // intervalo2 = setInterval(resolviendoAtaques(valorJugador), 3000)
-    if(ataqueJugadorPvP !== null && valorEnemigo !== null){
-        //console.log("valor enemigo : ", valorEnemigo)
-        combate(valorJugador, valorEnemigo, eleccionJugador, mokeponEnemigo)
-        //let resultadoRonda  
-        //return intervalo2 
-    }
-    
 } 
 function ataqueFuego2PvP(){
-    clearInterval(intervalo)
-    lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "defensa"
-    enviarAtaque(valorJugador)
-    let valorEnemigo = ataqueEnemigoPvP
-    
-    if(valorJugador !== null && valorEnemigo !== null){
-        //console.log("valor enemigo : ", valorEnemigo)
-        intervalo2 = setInterval(resolviendoAtaques(valorJugador, valorEnemigo), 3000)
-        //let resultadoRonda  
-        return intervalo2 
-    }
-    
+    ataqueJugadorPvP = "defensa"  
 } 
 function ataqueFuego3PvP(){
-    clearInterval(intervalo)
-    lienzo.clearRect(95,50,120, 100)
-    let valorJugador = "esquiva"
-    enviarAtaque(valorJugador)
-    let valorEnemigo = ataqueEnemigoPvP
-    
-    if(valorJugador !== null && valorEnemigo !== null){
-        //console.log("valor enemigo : ", valorEnemigo)
-        intervalo2 = setInterval(resolviendoAtaques(valorJugador, valorEnemigo), 3000)
-        //let resultadoRonda  
-        return intervalo2 
-    }
-    
+    ataqueJugadorPvP = "esquiva"
 } 
 //agua
 function ataqueAgua1(){
@@ -649,6 +624,16 @@ function ataqueAgua3(){
         return resultadoRonda
     }
 }
+//habilidades de agua para PvP
+function ataqueAgua1PvP(){
+    ataqueJugadorPvP = "ataque"
+}
+function ataqueAgua2PvP(){
+    ataqueJugadorPvP = "defensa"
+}
+function ataqueAgua3PvP(){
+    ataqueJugadorPvP = "esquiva"
+}
 //tierra
 function ataqueTierra1(){
     //alert("Atacaste con Puños de piedra")
@@ -685,6 +670,16 @@ function ataqueTierra3(){
         contadorEsquivaJugador++
         return resultadoRonda
     }    
+}
+//habilidades de tierra para PvP
+function ataqueTierra1PvP(){
+    ataqueJugadorPvP = "ataque"
+}
+function ataqueTierra2PvP(){
+    ataqueJugadorPvP = "defensa"
+}
+function ataqueTierra3PvP(){
+    ataqueJugadorPvP = "esquiva"
 }
 
 // esta es la funcion de ataque enemigo
@@ -737,7 +732,7 @@ function ataqueEnemigo(){
         alert("algo salio mal")
     }
 }
-// Esta funcion contiene toda la logica de combate de los personajes
+// Esta funcion contiene toda la logica de combate PvE
 function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
 
     mensajes.classList.remove("inactive")
@@ -771,7 +766,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `Mascota de Jugador inflinge ${ataqueJugador} de daño a mascota de  PC con ${habilidadUsadaJugador[0].nombre}. Mascota de PC inflinge ${ataquePc} de daño a mascota de Jugador con ${habilidadUsadaPc[0].nombre}.`
+        parrafo.innerText = `Mascota de Jugador inflinge ${ataqueJugador} de daño a mascota de  oponente con ${habilidadUsadaJugador[0].nombre}. Mascota de oponente inflinge ${ataquePc} de daño a mascota de Jugador con ${habilidadUsadaPc[0].nombre}.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
@@ -779,12 +774,12 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         pintarHabilidadJugador(eleccionJugador, habilidad)
         let habilidadPc = eleccionPC.defensaImg
         pintarHabilidadPc(eleccionPC, habilidadPc)
-        let saludJugador = parseInt(saludJugador1.innerText) - (defensaPc - 10)
+        let saludJugador = parseInt(saludJugador1.innerText) - (defensaPc)
         saludJugador1.innerText = String(saludJugador)
         let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
         saludEnemigo1.innerText = String(saludEnemigo)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `Mascota de PC refleja ${(defensaPc - 10)} de daño a mascota de Jugador al usar la habilidad de Escudo, pero sufre 10 de daño.`
+        parrafo.innerText = `Mascota de oponente refleja ${(defensaPc)} de daño a mascota de Jugador al usar la habilidad de Escudo, pero sufre 10 de daño.`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
@@ -797,7 +792,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
             let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
             saludEnemigo1.innerText = String(saludEnemigo)
             let parrafo = document.getElementById("msj")
-            parrafo.innerText = `Mascota PC usa la habilidad ${habilidadUsadaPc[2].nombre}, pero no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
+            parrafo.innerText = `Mascota oponente usa la habilidad ${habilidadUsadaPc[2].nombre}, pero no pudo esquivar el ataque y recibe ${ataqueJugador} de daño.`
             // mensajes.appendChild(parrafo)
             salud()
         }else{
@@ -834,7 +829,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let saludJugador = parseInt(saludJugador1.innerText) - 10
         saludJugador1.innerText = String(saludJugador)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `Mascota de PC ataca con ${habilidadUsadaPc[0].nombre}, Mascota de Jugador refleja ${defensaJugador} de daño al usar la habilidad de Escudo. pero sufre 10 de daño`
+        parrafo.innerText = `Mascota de oponente ataca con ${habilidadUsadaPc[0].nombre}, Mascota de Jugador refleja ${defensaJugador} de daño al usar la habilidad de Escudo. pero sufre 10 de daño`
         // mensajes.appendChild(parrafo)
         salud()
     }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
@@ -852,7 +847,7 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let habilidadPc = eleccionPC.esquivaImg
         pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
+        parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
         
     }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
@@ -897,7 +892,152 @@ function combate(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
         let habilidadPc = eleccionPC.defensaImg
         pintarHabilidadPc(eleccionPC, habilidadPc)
         let parrafo = document.getElementById("msj")
-        parrafo.innerText = `Mascota de PC usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
+        parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
+        // mensajes.appendChild(parrafo)
+    }else if(valorJugador == "esquiva" && valorEnemigo == "esquiva"){
+        let habilidad = eleccionJugador.esquivaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.esquivaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `ambos personajes usan la habilidad de esquivar.`
+        // mensajes.appendChild(parrafo)
+    }else{
+
+        mensajes.innerText = `<p>algo salio mal.</p>`
+    }
+}
+
+//esta funcion contiene toda la logica del combate PvP
+function combatePvP(valorJugador, valorEnemigo, eleccionJugador, eleccionPC){
+
+    mensajes.classList.remove("inactive")
+
+    let ataqueJugador = eleccionJugador.ataque
+    let ataquePc = eleccionPC.ataque
+    let defensaJugador = eleccionJugador.defensa
+    let defensaPc = eleccionPC.defensa
+    let esquivaJugador = eleccionJugador.esquiva
+    let esquivaPc = eleccionPC.esquiva
+    let esquivaHabilidad 
+    //let escudosUsados = 4
+    let habilidadUsadaJugador = eleccionJugador.habilidades
+    let habilidadUsadaPc = eleccionPC.habilidades
+
+    //funcion de aleatoriedad
+    function esquivarAleatorio(min, max){
+        return Math.floor(Math.random()*(max - min + 1) + min)
+    }
+
+
+    if(valorJugador == "ataque" && valorEnemigo == "ataque"){
+        let habilidad = eleccionJugador.ataqueImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.ataqueImgPc
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        // pintarPersonajeJugador(eleccionJugador)
+        // pintarPersonajeEnemigo(eleccionPC)
+        let saludJugador = parseInt(saludJugador1.innerText) - ataquePc
+        saludJugador1.innerText = String(saludJugador)
+        let saludEnemigo = parseInt(saludEnemigo1.innerText) - ataqueJugador
+        saludEnemigo1.innerText = String(saludEnemigo)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Mascota de Jugador inflinge ${ataqueJugador} de daño a mascota de  oponente con ${habilidadUsadaJugador[0].nombre}. Mascota de oponente inflinge ${ataquePc} de daño a mascota de Jugador con ${habilidadUsadaPc[0].nombre}.`
+        // mensajes.appendChild(parrafo)
+        salud()
+    }else if(valorJugador == "ataque" && valorEnemigo == "defensa"){
+        let habilidad = eleccionJugador.ataqueImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let saludJugador = parseInt(saludJugador1.innerText) - (defensaPc)
+        saludJugador1.innerText = String(saludJugador)
+        let saludEnemigo = parseInt(saludEnemigo1.innerText) - 10
+        saludEnemigo1.innerText = String(saludEnemigo)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Mascota de oponente refleja ${(defensaPc)} de daño a mascota de Jugador al usar la habilidad de Escudo, pero sufre 10 de daño.`
+        // mensajes.appendChild(parrafo)
+        salud()
+    }else if(valorJugador == "ataque" && valorEnemigo == "esquiva"){
+        if(parseInt(saludEnemigo1.innerText) >= 90){
+            let habilidad = eleccionJugador.ataqueImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.esquivaImg
+            pintarHabilidadPc(eleccionPC, habilidadPc)
+            saludEnemigo1.innerText = "100"
+            let parrafo = document.getElementById("msj")
+            parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[2].nombre} y restaura su salud.`
+            // mensajes.appendChild(parrafo)
+        }else{
+            let habilidad = eleccionJugador.ataqueImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.esquivaImg
+            pintarHabilidadPc(eleccionPC, habilidadPc)
+            let saludEnemigo = parseInt(saludEnemigo1.innerText) + 10
+            saludEnemigo1.innerText = String(saludEnemigo)
+            let parrafo = document.getElementById("msj")
+            parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[2].nombre} con exito y restaura 10 de salud.`
+            // mensajes.appendChild(parrafo)
+            salud()
+        }    
+    }else if(valorJugador == "defensa" && valorEnemigo == "ataque"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.ataqueImgPc
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let saludEnemigo = parseInt(saludEnemigo1.innerText) - defensaJugador
+        saludEnemigo1.innerText = String(saludEnemigo)
+        let saludJugador = parseInt(saludJugador1.innerText) - 10
+        saludJugador1.innerText = String(saludJugador)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Mascota de oponente ataca con ${habilidadUsadaPc[0].nombre}, Mascota de Jugador refleja ${defensaJugador} de daño al usar la habilidad de Escudo. pero sufre 10 de daño`
+        // mensajes.appendChild(parrafo)
+        salud()
+    }else if(valorJugador == "defensa" && valorEnemigo == "defensa"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Ambos personajes se defienden y ninguno sufre daño.`
+        // mensajes.appendChild(parrafo)
+        
+    }else if(valorJugador == "defensa" && valorEnemigo == "esquiva"){
+        let habilidad = eleccionJugador.defensaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.esquivaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[2].nombre}, ninguno de los personajes sufre daño.`
+        // mensajes.appendChild(parrafo)
+        
+    }else if(valorJugador == "esquiva" && valorEnemigo == "ataque"){
+        if(parseInt(saludJugador1.innerText) >= 90){
+            let habilidad = eleccionJugador.esquivaImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.ataqueImgPc
+            pintarHabilidadPc(eleccionPC, habilidadPc)
+            saludJugador1.innerText = "100"
+            let parrafo = document.getElementById("msj")
+            parrafo.innerText = `Mascota de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} y restaura su salud.`
+        }else{
+            let habilidad = eleccionJugador.esquivaImg
+            pintarHabilidadJugador(eleccionJugador, habilidad)
+            let habilidadPc = eleccionPC.ataqueImgPc
+            pintarHabilidadPc(eleccionPC, habilidadPc)
+            let saludJugador = parseInt(saludJugador1.innerText) + 10
+            saludJugador1.innerText = String(saludJugador)
+            let parrafo = document.getElementById("msj")
+            parrafo.innerText = `Mascota de Jugador pudo esquivar el ataque ${habilidadUsadaPc[0].nombre} de ${eleccionPC.nombre} y restaura 10 de salud.`
+        }
+        salud()
+    }else if(valorJugador == "esquiva" && valorEnemigo == "defensa"){
+        let habilidad = eleccionJugador.esquivaImg
+        pintarHabilidadJugador(eleccionJugador, habilidad)
+        let habilidadPc = eleccionPC.defensaImg
+        pintarHabilidadPc(eleccionPC, habilidadPc)
+        let parrafo = document.getElementById("msj")
+        parrafo.innerText = `Mascota de oponente usa la habilidad ${habilidadUsadaPc[1].nombre},  ninguno de los personajes sufre daño.`
         // mensajes.appendChild(parrafo)
     }else if(valorJugador == "esquiva" && valorEnemigo == "esquiva"){
         let habilidad = eleccionJugador.esquivaImg
