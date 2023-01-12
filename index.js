@@ -3,6 +3,8 @@ const cors = require("cors")
 
 const app = express()
 
+app.use(express.static('public'))
+
 app.use(cors()) // solucion a todos los posibles errores con cors al usar dicha libreria
 app.use(express.json()) // esta linea me permite usar POST que traingan contenido en json
 
@@ -30,6 +32,11 @@ class Mokepon{
     }
 }
 
+// app.get("",(req,res)=>{
+//     res.setHeader("Access-Control-Allow-Origin", "*")
+//     res.send(aplication)
+// })
+
 app.get("/unirse", (req, res) => {
     const id = `${Math.random()}`
 
@@ -52,7 +59,7 @@ app.post("/mokepon/:jugadorId", (req, res) =>{
     if(jugadorIndex >= 0 ){
         jugadores[jugadorIndex].asignarMokepon(mokepon)
     }
-    console.log(" este es el array ", jugadores)
+    console.log(" este es el array de jugadores ", jugadores)
     //console.log(jugadorId)
     res.end()
 })
@@ -92,6 +99,12 @@ app.post("/mokepon/:jugadorId/ataque", (req, res) =>{
     console.log("esto que rayos es",ataqueEnemigo)
     res.send({ataqueEnemigo})
 })
+
+// app.delete("/mokepon/:jugadorId/limpiarAtaque", (req,res) =>{
+//     const jugadorId = req.params.jugadorId || ""
+
+// })
+
 
 app.listen(8080, () =>{
     console.log("servidor en linea")

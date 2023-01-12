@@ -11,6 +11,9 @@ const botonInstructions = document.querySelector("#botonInstructions")
 const evaluarResultado = document.querySelector("#evaluarResultado")
 evaluarResultado.addEventListener("click", siguienteTurnoPvP)
 
+//variable del parrafo de esperar turno
+const esperaTurno = document.querySelector("#esperaTurno")
+
 
 // variable de seccion de seleccionar mascota
 const seleccionarMascota = document.querySelector("#seleccionarMascota")
@@ -147,18 +150,29 @@ function seccionPvP(){
 }
 
 function siguienteTurnoPvP(){
+    
     ataqueEnemigoPvP = null
     ataqueJugadorPvP = null
     ataquesEnemigosPvP = []
+    // limpiarAtaque()
     intervalo2 =  setInterval(pintarPersonajesPvP2, 1000)
     lienzo.clearRect(95,50,120, 100)
-    habilidades.classList.remove("inactive")
     evaluarResultado.classList.add("inactive")
+    //habilidades.classList.remove("inactive")
+    esperaTurno.classList.remove("inactive")
+    setTimeout(esperarTurno, 5000)
+    
+}
+
+function esperarTurno(){
+    ataquesEnemigosPvP = []
+    habilidades.classList.remove("inactive")
+    esperaTurno.classList.add("inactive")
 }
 
 
 function enviarPosicionJugador(x,y){
-    fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
+    fetch(`http://192.168.1.34:8080/mokepon/${jugadorId}/posicion`, {
         method: "post",
         headers:{
             "Content-Type": "application/json"
@@ -431,6 +445,7 @@ function pintarPersonajesPvP(){
 }
 
 function pintarPersonajesPvP2(){
+    //limpiarAtaque()
     enviarAtaque(ataqueJugadorPvP)
     resolviendoAtaques()
     
@@ -482,9 +497,20 @@ function seleccionarMascotaPC(){
     }
 }
 
+// function limpiarAtaque(){
+//     fetch(`http://192.168.1.34:8080/mokepon/${jugadorId}/limpiarAtaque`,{
+//         method: "put",
+//         headers: {
+//             "Content-Type":"application/json"
+//         },
+//         body: JSON.stringify({
+//             
+//         })
+//     })
+// }
 //post al servidor con el ataque del jugador
 function enviarAtaque(ataque){
-    fetch(`http://localhost:8080/mokepon/${jugadorId}/ataque`, {
+    fetch(`http://192.168.1.34:8080/mokepon/${jugadorId}/ataque`, {
         method: "post",
         headers: {
             "Content-Type":"application/json"
@@ -498,13 +524,12 @@ function enviarAtaque(ataque){
             if(res.ok){
                 res.json()
                     .then(function({ataqueEnemigo}){
-                        console.log("ataques enemigos", ataqueEnemigo)
+                        //console.log("objeto enemigo", typeof(ataqueEnemigo))
+                        console.log("array con el objeto enemigo ", ataqueEnemigo)
                         ataquesEnemigosPvP = ataqueEnemigo?.map(function(habilidad){
-
+                            console.log("array de ataques enemigos", ataquesEnemigosPvP)
                             const habilidadUsada = habilidad.ataque || ""
-
-                            //console.log("habilidad usada: ", habilidadUsada)
-                            
+                         
                             if(habilidadUsada === "ataque"){
                                 ataqueEnemigoPvP = "ataque"
                             }else if(habilidadUsada === "defensa"){
@@ -512,6 +537,7 @@ function enviarAtaque(ataque){
                             }else if(habilidadUsada === "esquiva"){
                                 ataqueEnemigoPvP = "esquiva"
                             }
+                            console.log("ataque enemigo", ataqueEnemigoPvP)
                             //console.log("este es el resultado", ataqueEnemigoPvP)
                             return ataqueEnemigoPvP
                         })
@@ -531,8 +557,7 @@ function resolviendoAtaques(){
         habilidades.classList.add("inactive")
         evaluarResultado.classList.remove("inactive") 
         clearInterval(intervalo)
-        clearInterval(intervalo2)
-              
+        clearInterval(intervalo2)  
     }
     
 }
@@ -1064,6 +1089,7 @@ function salud(){
         saludJugador1.innerHTML = "0"
         saludEnemigo1.innerHTML = "0"
         habilidades.classList.add("inactive")
+        evaluarResultado.classList.add("inactive")
         saludJugador1.classList.add("salud-negativa")
         saludEnemigo1.classList.add("salud-negativa")
         btnReiniciar = document.querySelector("#btnReiniciar")
@@ -1079,6 +1105,7 @@ function salud(){
         saludJugador1.innerHTML = "0"
         saludJugador1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
+        evaluarResultado.classList.add("inactive")
         btnReiniciar = document.querySelector("#btnReiniciar")
         btnReiniciar.classList.remove("inactive")
         btnReiniciar.addEventListener("click", () =>{location.reload()})
@@ -1092,6 +1119,7 @@ function salud(){
         saludEnemigo1.innerHTML = "0"
         saludEnemigo1.classList.add("salud-negativa")
         habilidades.classList.add("inactive")
+        evaluarResultado.classList.add("inactive")
         btnReiniciar = document.querySelector("#btnReiniciar")
         btnReiniciar.classList.remove("inactive")
         btnReiniciar.addEventListener("click", () =>{location.reload()})
@@ -1099,7 +1127,7 @@ function salud(){
 }
 
 function unirseAlJuego(){
-    fetch("http://localhost:8080/unirse")
+    fetch("http://192.168.1.34:8080/unirse")
         .then(function(res){
             console.log("esta es la respues del fetch unirse: ", typeof(res) )
             if(res.ok){
@@ -1114,7 +1142,7 @@ function unirseAlJuego(){
 
 function seleccionarMokeponBackEnd(eleccionJugador){
    
-    fetch(`http://localhost:8080/mokepon/${jugadorId}`, {
+    fetch(`http://192.168.1.34:8080/mokepon/${jugadorId}`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
