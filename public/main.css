@@ -16,6 +16,23 @@ body{
     background-color: #2192FF;
 }
 
+.icon-bar{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+.icon-bar a {
+    text-align: center;
+    padding: 5px;
+    margin-right: 15px;
+    font-size: 30px;
+}
+
+.fa-github:before {
+    color: #FDFF00  ;
+}
+
 .iniciar-juego{
     align-self: center;
     font-size: 30px;
@@ -33,7 +50,7 @@ body{
 }
 
 .title{
-    margin-top: 30px;
+    margin-top: 10px;
     font-size: 40px;
 }
 
